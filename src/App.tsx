@@ -1,21 +1,31 @@
+import { Provider } from "react-redux";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { store } from "./app/store";
 import BottomNav from "./components/BottomNav";
 import Header from "./components/Header";
-import PostCard from "./components/PostCard";
-import TweetBox from "./components/TweetBox";
+import BookmarkPage from "./pages/BookmarkPage";
+import ExplorePage from "./pages/ExplorePage";
+import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
-    <>
-      <Header />
-      <main className="bg-gray-100 min-h-screen pt-28 pb-10">
-        <div className="max-w-[850px] mx-auto container">
-          <TweetBox />
-          <PostCard />
-          <PostCard />
+    <Provider store={store}>
+      <BrowserRouter>
+        <Header />
+        <div className="pt-[76px]">
+          <Routes>
+            <Route path="/">
+              <Route index element={<HomePage />} />
+              <Route path=":username" element={<ProfilePage />} />
+              <Route path="explore" element={<ExplorePage />} />
+              <Route path="bookmark" element={<BookmarkPage />} />
+            </Route>
+          </Routes>
         </div>
-      </main>
-      <BottomNav />
-    </>
+        <BottomNav />
+      </BrowserRouter>
+    </Provider>
   );
 }
 

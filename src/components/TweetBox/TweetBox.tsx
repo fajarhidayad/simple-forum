@@ -1,9 +1,29 @@
+import { useState } from "react";
 import { BsCardImage } from "react-icons/bs";
 import { IoEarth } from "react-icons/io5";
+import { useAppDispatch } from "../../app/hooks";
+import { addPost } from "../../features/post/postSlice";
 
 const TweetBox = () => {
+  const [content, setContent] = useState("");
+  const dispatch = useAppDispatch();
+
+  const submitPost = () => {
+    if (content) {
+      const post = {
+        id: `${+new Date()}`,
+        sender: "Fajar",
+        content,
+        createdAt: Date.now(),
+      };
+
+      dispatch(addPost(post));
+      setContent("");
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg py-4 px-7 shadow-sm mx-auto w-full">
+    <div className="bg-white rounded-lg py-4 px-7 shadow-sm mx-auto w-full mb-5">
       <h4 className="font-poppins font-semibold text-slate-800 pb-2 border-b border-b-gray-300/70">
         Say anything
       </h4>
@@ -15,6 +35,8 @@ const TweetBox = () => {
           <textarea
             placeholder="Anything funny..."
             className="w-full p-2 focus:border-0 max-h-32"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
           />
           <div className="flex mt-2">
             {/* <button className="text-blue-500 mr-3">
@@ -31,7 +53,11 @@ const TweetBox = () => {
               <IoEarth size={20} />
               <span className="text-xs">Everyone can reply</span>
             </button>
-            <button className="bg-blue-500 text-white px-5 py-2 rounded text-xs font-medium ml-auto font-noto hover:bg-blue-600 transition-colors duration-200">
+            <button
+              className="bg-blue-500 text-white px-5 py-2 rounded text-xs font-medium ml-auto font-noto hover:bg-blue-600 transition-colors duration-200 disabled:bg-blue-300"
+              disabled={content === ""}
+              onClick={submitPost}
+            >
               Post
             </button>
           </div>

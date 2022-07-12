@@ -1,5 +1,6 @@
 import React from "react";
 import { BsHeart } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const CommentCard = () => {
   return (
@@ -10,7 +11,12 @@ const CommentCard = () => {
       <div className="flex-1">
         <div className="bg-gray-100 rounded-md p-4">
           <div className="flex items-center space-x-3">
-            <h4 className="font-poppins font-medium text-sm">Johnny Depp</h4>
+            <Link
+              to="/user"
+              className="font-poppins font-medium text-sm hover:underline"
+            >
+              Johnny Depp
+            </Link>
             <p className="text-gray-400 text-xs">8 July at 20:37</p>
           </div>
           <p className="text-gray-500">

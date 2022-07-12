@@ -1,28 +1,28 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import HeaderLink from "./HeaderLink";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Header = () => {
   return (
     <header className="fixed w-full shadow bg-white z-10">
-      <nav className="container flex justify-between py-7 md:py-0">
-        <a
-          href="#"
+      <nav className="container flex justify-between py-5 md:py-0">
+        <Link
+          to="/"
           className="font-bold text-lg font-noto text-slate-700 self-center"
         >
           FunForum
-        </a>
+        </Link>
 
         <ul className="hidden md:flex space-x-10 items-center font-semibold text-sm py-7">
           <li>
-            <HeaderLink href="#" active>
-              Home
-            </HeaderLink>
+            <HeaderLink href="/">Home</HeaderLink>
           </li>
           <li>
-            <HeaderLink href="#">Explore</HeaderLink>
+            <HeaderLink href="/explore">Explore</HeaderLink>
           </li>
           <li>
-            <HeaderLink href="#">Bookmarks</HeaderLink>
+            <HeaderLink href="/bookmark">Bookmarks</HeaderLink>
           </li>
         </ul>
 
@@ -32,10 +32,12 @@ const Header = () => {
         >
           Sign In
         </a> */}
-        <button>
+        <button className="flex items-center space-x-2">
           <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold">
             IMG
           </div>
+          <h5 className="font-not font-bold">Jack Sparrow</h5>
+          <IoMdArrowDropdown />
         </button>
       </nav>
     </header>
