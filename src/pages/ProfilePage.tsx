@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import Container from "../components/Container";
 import PostCard from "../components/PostCard";
@@ -7,14 +7,29 @@ import ProfileInfo from "../components/ProfileInfo";
 import CardSide from "../components/CardSide";
 import CardSideButton from "../components/CardSide/CardSideButton";
 import { selectPosts } from "../features/post/postSlice";
+import Overlay from "../components/Overlay";
 
 const ProfilePage = () => {
+  const [overlay, setOverlay] = useState(false);
+  const [overlayTitle, setOverlayTitle] = useState("");
+
   const posts = useAppSelector(selectPosts);
+
+  const showOverlay = (type: string) => {
+    setOverlayTitle(type);
+    setOverlay(true);
+  };
+
   return (
     <>
+      <Overlay
+        active={overlay}
+        onCloseFn={() => setOverlay(false)}
+        title={overlayTitle}
+      />
       <ProfileImage />
       <Container className="-translate-y-[100px]">
-        <ProfileInfo />
+        <ProfileInfo showOverlayFn={showOverlay} />
         <CardSide>
           <CardSideButton text="Tweets" active />
           <CardSideButton text="Tweets & replies" />

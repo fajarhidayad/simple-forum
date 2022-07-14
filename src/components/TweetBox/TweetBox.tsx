@@ -34,7 +34,7 @@ const TweetBox = () => {
         <div className="flex-1">
           <textarea
             placeholder="Anything funny..."
-            className="w-full p-2 focus:border-0 max-h-32"
+            className="w-full p-2 focus:outline-none max-h-32"
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />

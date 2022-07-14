@@ -1,9 +1,18 @@
-import React from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import HeaderLink from "./HeaderLink";
 import { IoMdArrowDropdown } from "react-icons/io";
+import PopOverMenu from "./PopOverMenu";
+import useClickOutside from "../../hooks/useClickOutside";
 
 const Header = () => {
+  const [menu, setMenu] = useState(false);
+  const menuRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleClickMenu = () => setMenu(!menu);
+
+  useClickOutside(menuRef, () => setMenu(false));
+
   return (
     <header className="fixed w-full shadow bg-white z-10">
       <nav className="container flex justify-between py-5 md:py-0">
@@ -32,12 +41,17 @@ const Header = () => {
         >
           Sign In
         </a> */}
-        <button className="flex items-center space-x-2">
+        <button
+          className="relative flex items-center space-x-2"
+          onClick={handleClickMenu}
+          ref={menuRef}
+        >
           <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold">
             IMG
           </div>
           <h5 className="font-not font-bold">Jack Sparrow</h5>
           <IoMdArrowDropdown />
+          <PopOverMenu active={menu} />
         </button>
       </nav>
     </header>

@@ -29,7 +29,7 @@ const PostCard = ({ sender, createdAt, content }: PostCardProps) => {
   const date = new Date(createdAt).toString();
 
   return (
-    <article className="bg-white rounded-lg py-4 px-7 shadow-sm mx-auto mb-7">
+    <article className="bg-white rounded-lg py-4 px-5 shadow-sm mx-auto mb-7">
       <div className="flex">
         <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold mr-3">
           IMG
