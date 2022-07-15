@@ -18,17 +18,17 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ showOverlayFn }) => {
             <div className="flex justify-between space-x-6 mt-3 md:mt-0">
               <button
                 onClick={() => showOverlayFn("Following")}
-                className="text-sm font-poppins font-medium text-gray-400"
+                className="text-sm font-poppins font-medium text-gray-600 flex space-x-1 items-baseline hover:underline"
               >
-                <span className="font-semibold text-gray-600">102</span>{" "}
-                Following
+                <span className="font-semibold">102</span>{" "}
+                <p className="text-gray-400">Following</p>
               </button>
               <button
                 onClick={() => showOverlayFn("Followers")}
-                className="text-sm font-poppins font-medium text-gray-400"
+                className="text-sm font-poppins font-medium text-gray-600 flex space-x-1 items-baseline hover:underline"
               >
-                <span className="font-semibold text-gray-600">15,2k</span>{" "}
-                Followers
+                <span className="font-semibold">15,2k</span>{" "}
+                <p className="text-gray-400">Followers</p>
               </button>
             </div>
           </div>
