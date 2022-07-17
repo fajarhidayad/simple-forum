@@ -12,7 +12,7 @@ const TweetBox = () => {
     if (content) {
       const post = {
         id: `${+new Date()}`,
-        sender: "Fajar",
+        user: "Fajar",
         content,
         createdAt: Date.now(),
       };
