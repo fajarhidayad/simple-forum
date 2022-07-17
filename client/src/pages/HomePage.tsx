@@ -16,7 +16,7 @@ const HomePage = () => {
         {posts.map((post) => (
           <PostCard
             key={post.id}
-            sender={post.sender}
+            sender={post.user}
             createdAt={post.createdAt}
             content={post.content}
           />

@@ -25,7 +25,7 @@ const ExplorePage = () => {
         {posts.map((post) => (
           <PostCard
             key={post.id}
-            sender={post.sender}
+            sender={post.user}
             content={post.content}
             createdAt={post.createdAt}
           />

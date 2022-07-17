@@ -4,7 +4,7 @@ import type { RootState } from "../../app/store";
 
 interface Post {
   id: string;
-  sender: string;
+  user: string;
   createdAt: number;
   content: string;
 }
@@ -17,7 +17,7 @@ const initialState: PostState = {
   posts: [
     {
       id: `${+new Date()}`,
-      sender: "Johnny Depp",
+      user: "Johnny Depp",
       createdAt: Date.now(),
       content: "I'm Jack Sparrow",
     },
