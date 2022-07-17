@@ -1,14 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
-import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import { z } from "zod";
 import cors from "cors";
 import "dotenv/config";
-import { createRouter, createContext } from "./context";
-import posts from "./routers/post";
+import { appRouter } from "./router";
+import { createContext } from "./utils/context";
 
-const appRouter = createRouter().merge("post.", posts);
-export type AppRouter = typeof appRouter;
+export type { AppRouter } from "./router";
 
 const app = express();
 app.use(cors());

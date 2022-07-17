@@ -6,9 +6,10 @@ import SearchInput from "../components/SearchInput";
 import { useAppSelector } from "../app/hooks";
 import { selectPosts } from "../features/post/postSlice";
 import PostCard from "../components/PostCard";
+import { trpc } from "../utils/trpc";
 
 const ExplorePage = () => {
-  const posts = useAppSelector(selectPosts);
+  const posts = trpc.useQuery(["post.getAll"]).data;
 
   return (
     <Container>
@@ -22,14 +23,18 @@ const ExplorePage = () => {
       </section>
       <section className="col-span-2">
         <SearchInput />
-        {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            sender={post.user}
-            content={post.content}
-            createdAt={post.createdAt}
-          />
-        ))}
+        {posts ? (
+          posts.map((post) => (
+            <PostCard
+              key={post.id}
+              sender={post.user}
+              content={post.content}
+              createdAt={post.createdAt}
+            />
+          ))
+        ) : (
+          <h3>Loading...</h3>
+        )}
       </section>
     </Container>
   );

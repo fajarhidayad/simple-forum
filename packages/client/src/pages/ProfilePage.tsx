@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { useAppSelector } from "../app/hooks";
 import Container from "../components/Container";
 import PostCard from "../components/PostCard";
 import ProfileImage from "../components/ProfileImage";
 import ProfileInfo from "../components/ProfileInfo";
 import CardSide from "../components/CardSide";
 import CardSideButton from "../components/CardSide/CardSideButton";
-import { selectPosts } from "../features/post/postSlice";
 import Overlay from "../components/Overlay";
+import { trpc } from "../utils/trpc";
 
 const ProfilePage = () => {
   const [overlay, setOverlay] = useState(false);
   const [overlayTitle, setOverlayTitle] = useState("");
 
-  const posts = useAppSelector(selectPosts);
+  // const posts = useAppSelector(selectPosts);
+  const {
+    data: posts,
+    error,
+    isError,
+    isLoading,
+  } = trpc.useQuery(["post.getAll"]);
+  const loadingState = isLoading && <h1>Loading...</h1>;
+  const errorState = isError && <h1>{error.message}</h1>;
 
   const showOverlay = (type: string) => {
     setOverlayTitle(type);
@@ -37,14 +44,17 @@ const ProfilePage = () => {
           <CardSideButton text="Likes" />
         </CardSide>
         <section className="col-span-2">
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              sender={post.user}
-              createdAt={post.createdAt}
-              content={post.content}
-            />
-          ))}
+          {loadingState}
+          {errorState}
+          {posts &&
+            posts.map((post) => (
+              <PostCard
+                key={post.id}
+                sender={post.user}
+                createdAt={post.createdAt}
+                content={post.content}
+              />
+            ))}
         </section>
       </Container>
     </>

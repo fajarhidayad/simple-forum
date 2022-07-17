@@ -1,13 +1,20 @@
-import React from "react";
-import { useAppSelector } from "../app/hooks";
 import CardSide from "../components/CardSide";
 import CardSideButton from "../components/CardSide/CardSideButton";
 import Container from "../components/Container";
 import PostCard from "../components/PostCard";
-import { selectPosts } from "../features/post/postSlice";
+import { trpc } from "../utils/trpc";
 
 const BookmarkPage = () => {
-  const posts = useAppSelector(selectPosts);
+  // const posts = useAppSelector(selectPosts);
+  const {
+    data: posts,
+    isLoading,
+    isError,
+    error,
+  } = trpc.useQuery(["post.getAll"]);
+
+  const loadingState = isLoading && <h1>Loading...</h1>;
+  const errorState = isError && <h1>{error.message}</h1>;
 
   return (
     <Container>
@@ -20,14 +27,17 @@ const BookmarkPage = () => {
         </CardSide>
       </section>
       <section className="col-span-2">
-        {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            sender={post.user}
-            content={post.content}
-            createdAt={post.createdAt}
-          />
-        ))}
+        {loadingState}
+        {errorState}
+        {posts &&
+          posts.map((post) => (
+            <PostCard
+              key={post.id}
+              sender={post.user}
+              content={post.content}
+              createdAt={post.createdAt}
+            />
+          ))}
       </section>
     </Container>
   );

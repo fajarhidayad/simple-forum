@@ -7,7 +7,7 @@ import CommentInput from "./CommentInput";
 
 interface PostCardProps {
   sender: string;
-  createdAt: number;
+  createdAt: Date;
   content: string;
 }
 
