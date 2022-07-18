@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { BsCardImage } from "react-icons/bs";
 import { IoEarth } from "react-icons/io5";
-import { useAppDispatch } from "../../app/hooks";
-import { addPost } from "../../features/post/postSlice";
+import { trpc } from "../../utils/trpc";
 
 const TweetBox = () => {
   const [content, setContent] = useState("");
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+
+  const utils = trpc.useContext();
+  const postMutation = trpc.useMutation("post.createPost", {
+    onSuccess(input) {
+      utils.invalidateQueries(["post.getAll"]);
+    },
+  });
 
   const submitPost = () => {
     if (content) {
@@ -17,7 +23,8 @@ const TweetBox = () => {
         createdAt: Date.now(),
       };
 
-      dispatch(addPost(post));
+      // dispatch(addPost(post));
+      postMutation.mutate({ content, user: "Surya" });
       setContent("");
     }
   };

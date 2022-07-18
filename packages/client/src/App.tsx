@@ -17,7 +17,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { trpc } from "./utils/trpc";
 
 function App() {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
 
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
@@ -48,6 +48,7 @@ function App() {
               </>
             ) : (
               <Routes>
+                <Route path="/" element={<SignInPage />} />
                 <Route path="/login" element={<SignInPage />} />
                 <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="*" element={<NotFoundPage />} />
