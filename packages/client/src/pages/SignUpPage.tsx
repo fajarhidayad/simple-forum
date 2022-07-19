@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputForm from "../components/InputForm/InputForm";
+import { trpc } from "../utils/trpc";
 
 interface SignUpForm {
   firstName: string;
   lastName: string;
-  userName: string;
+  username: string;
   email: string;
   password: string;
 }
@@ -22,7 +23,7 @@ const schema = z.object({
     .string({ required_error: "This field is required" })
     .min(3, { message: "Minimum 3 characters" })
     .max(32, { message: "Maximum 32 characters" }),
-  userName: z
+  username: z
     .string({ required_error: "This field is required" })
     .min(3, { message: "Minimum 3 characters" })
     .max(32, { message: "Maximum 32 characters" }),
@@ -35,11 +36,19 @@ const schema = z.object({
 });
 
 const SignUpPage: React.FC = () => {
+  const signUpMutation = trpc.useMutation("auth.signUp");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignUpForm>({ resolver: zodResolver(schema) });
+
+  const onSignUp = (data: SignUpForm) => {
+    signUpMutation.mutateAsync({
+      ...data,
+    });
+  };
 
   return (
     <main className="bg-gray-200 h-screen w-screen flex items-center justify-center">
@@ -59,7 +68,7 @@ const SignUpPage: React.FC = () => {
 
         <form
           className="flex flex-col mt-10 self-stretch px-10"
-          onSubmit={handleSubmit((d) => console.log(d))}
+          onSubmit={handleSubmit(onSignUp)}
         >
           <div className="flex space-x-3">
             <InputForm
@@ -79,8 +88,8 @@ const SignUpPage: React.FC = () => {
           <InputForm
             type="text"
             placeholder="Username"
-            {...register("userName")}
-            errors={errors.userName?.message}
+            {...register("username")}
+            errors={errors.username?.message}
           />
           <div className="my-3"></div>
           <InputForm

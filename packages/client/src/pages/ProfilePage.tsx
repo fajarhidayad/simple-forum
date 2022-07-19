@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Container from "../components/Container";
-import PostCard from "../components/PostCard";
+import TweetCard from "../components/TweetCard";
 import ProfileImage from "../components/ProfileImage";
 import ProfileInfo from "../components/ProfileInfo";
 import CardSide from "../components/CardSide";
@@ -12,13 +12,12 @@ const ProfilePage = () => {
   const [overlay, setOverlay] = useState(false);
   const [overlayTitle, setOverlayTitle] = useState("");
 
-  // const posts = useAppSelector(selectPosts);
   const {
-    data: posts,
+    data: tweets,
     error,
     isError,
     isLoading,
-  } = trpc.useQuery(["post.getAll"]);
+  } = trpc.useQuery(["tweet.getAll"]);
   const loadingState = isLoading && <h1>Loading...</h1>;
   const errorState = isError && <h1>{error.message}</h1>;
 
@@ -46,13 +45,13 @@ const ProfilePage = () => {
         <section className="col-span-2">
           {loadingState}
           {errorState}
-          {posts &&
-            posts.map((post) => (
-              <PostCard
-                key={post.id}
-                sender={post.user}
-                createdAt={post.createdAt}
-                content={post.content}
+          {tweets &&
+            tweets.map((tweet) => (
+              <TweetCard
+                key={tweet.id}
+                sender={tweet.user.username}
+                createdAt={tweet.createdAt}
+                text={tweet.text}
               />
             ))}
         </section>

@@ -2,20 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../app/store";
 
-interface User {
-  email: string;
+const TOKEN = "token";
+
+interface Auth {
   token: string;
 }
 
-interface UserState {
-  userInfo: User | undefined;
+interface AuthState {
+  token: Auth | undefined;
 }
 
-const userInfoFromStorage = JSON.parse(
-  localStorage.getItem("user-info") as string
-);
+const tokenFromStorage = JSON.parse(localStorage.getItem(TOKEN) as string);
 
-const initialState: UserState = { userInfo: userInfoFromStorage } || {
+const initialState: AuthState = { token: tokenFromStorage } || {
   userInfo: undefined,
 };
 
@@ -23,18 +22,18 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    signIn(state, action: PayloadAction<User>) {
-      state.userInfo = action.payload;
-      localStorage.setItem("user-info", JSON.stringify(action.payload));
+    signIn(state, action: PayloadAction<Auth>) {
+      state.token = action.payload;
+      localStorage.setItem(TOKEN, JSON.stringify(action.payload));
     },
     signOut(state) {
-      localStorage.removeItem("user-info");
-      state.userInfo = undefined;
+      localStorage.removeItem(TOKEN);
+      state.token = undefined;
     },
   },
 });
 
-export const getUserInfo = (state: RootState) => state.auth.userInfo;
+export const getToken = (state: RootState) => state.auth.token;
 export const { signIn, signOut } = authSlice.actions;
 
 export default authSlice.reducer;

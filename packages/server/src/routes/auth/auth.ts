@@ -1,16 +1,13 @@
-import { createRouter } from "../utils/context";
-import { prisma } from "../db/prisma";
-import { z } from "zod";
-import jwt from "jsonwebtoken";
-import { comparePassword, hashPassword } from "../utils/hashPassword";
+import { createRouter } from "../../utils/context";
+import { prisma } from "../../db/prisma";
+import { comparePassword, hashPassword } from "../../utils/hashPassword";
 import { TRPCError } from "@trpc/server";
+import { signToken } from "../../utils/jwt";
+import { signInSchema, signUpSchema } from "./schema";
 
 const auth = createRouter()
   .mutation("signIn", {
-    input: z.object({
-      email: z.string().email(),
-      password: z.string(),
-    }),
+    input: signInSchema,
     async resolve({ input }) {
       const user = await prisma.user.findFirst({
         where: { email: input.email },
@@ -30,27 +27,15 @@ const auth = createRouter()
         });
       }
 
-      const token = jwt.sign(
-        {
-          email: user.email,
-        },
-        process.env.PRIVATE_KEY as string
-      );
+      const token = signToken({ id: user.id, username: user.username });
 
       return {
-        email: user.email,
         token,
       };
     },
   })
   .mutation("signUp", {
-    input: z.object({
-      firstName: z.string().min(3).max(50),
-      lastName: z.string().min(3).max(50),
-      username: z.string().min(3).max(100),
-      email: z.string().email(),
-      password: z.string().min(8).max(64),
-    }),
+    input: signUpSchema,
     async resolve({ input }) {
       const email = await prisma.user.findFirst({
         where: { email: input.email },
@@ -79,15 +64,14 @@ const auth = createRouter()
         password: hashed,
       };
 
-      await prisma.user.create({ data: { ...user } });
+      const createdUser = await prisma.user.create({ data: { ...user } });
 
-      const token = jwt.sign(
-        { email: input.email },
-        process.env.PRIVATE_KEY as string
-      );
+      const token = signToken({
+        id: createdUser.id,
+        username: createdUser.username,
+      });
 
       return {
-        email: input.email,
         token,
       };
     },

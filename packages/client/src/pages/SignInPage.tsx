@@ -41,14 +41,14 @@ const SignInPage: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    const checkSignIn = () => {
-      if (loginMutation.isSuccess) {
-        dispatch(signIn(loginMutation.data));
-        navigate("/", { replace: true });
-      }
-    };
+  const checkSignIn = () => {
+    if (loginMutation.isSuccess) {
+      dispatch(signIn(loginMutation.data));
+      navigate("/", { replace: true });
+    }
+  };
 
+  useEffect(() => {
     checkSignIn();
   }, [loginMutation.isSuccess]);
 

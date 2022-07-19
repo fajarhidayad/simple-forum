@@ -1,19 +1,16 @@
-import PostCard from "../components/PostCard";
+import TweetCard from "../components/TweetCard";
 import TweetBox from "../components/TweetBox";
-import { useAppSelector } from "../app/hooks";
 import Container from "../components/Container";
 import HomeSideBar from "../components/HomeSideBar";
 import { trpc } from "../utils/trpc";
 
 const HomePage = () => {
-  // const posts = useAppSelector(selectPosts);
-
   const {
-    data: posts,
+    data: tweets,
     error,
     isError,
     isLoading,
-  } = trpc.useQuery(["post.getAll"]);
+  } = trpc.useQuery(["tweet.getAll"], { retryOnMount: true });
 
   const loadingState = isLoading && <h1>Loading...</h1>;
   const errorState = isError && <h1>{error.message}</h1>;
@@ -24,13 +21,13 @@ const HomePage = () => {
         <TweetBox />
         {loadingState}
         {errorState}
-        {posts &&
-          posts.map((post) => (
-            <PostCard
-              key={post.id}
-              sender={post.user}
-              createdAt={post.createdAt}
-              content={post.content}
+        {tweets &&
+          tweets.map((tweet) => (
+            <TweetCard
+              key={tweet.id}
+              sender={tweet.user.username}
+              createdAt={tweet.createdAt}
+              text={tweet.text}
             />
           ))}
       </section>

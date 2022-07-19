@@ -1,17 +1,16 @@
 import CardSide from "../components/CardSide";
 import CardSideButton from "../components/CardSide/CardSideButton";
 import Container from "../components/Container";
-import PostCard from "../components/PostCard";
+import TweetCard from "../components/TweetCard";
 import { trpc } from "../utils/trpc";
 
 const BookmarkPage = () => {
-  // const posts = useAppSelector(selectPosts);
   const {
-    data: posts,
+    data: tweets,
     isLoading,
     isError,
     error,
-  } = trpc.useQuery(["post.getAll"]);
+  } = trpc.useQuery(["tweet.getAll"]);
 
   const loadingState = isLoading && <h1>Loading...</h1>;
   const errorState = isError && <h1>{error.message}</h1>;
@@ -29,13 +28,13 @@ const BookmarkPage = () => {
       <section className="col-span-2">
         {loadingState}
         {errorState}
-        {posts &&
-          posts.map((post) => (
-            <PostCard
-              key={post.id}
-              sender={post.user}
-              content={post.content}
-              createdAt={post.createdAt}
+        {tweets &&
+          tweets.map((tweet) => (
+            <TweetCard
+              key={tweet.id}
+              sender={tweet.user.username}
+              text={tweet.text}
+              createdAt={tweet.createdAt}
             />
           ))}
       </section>

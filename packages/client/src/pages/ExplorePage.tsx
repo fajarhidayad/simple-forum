@@ -1,15 +1,12 @@
-import React from "react";
 import Container from "../components/Container";
 import CardSide from "../components/CardSide";
 import CardSideButton from "../components/CardSide/CardSideButton";
 import SearchInput from "../components/SearchInput";
-import { useAppSelector } from "../app/hooks";
-import { selectPosts } from "../features/post/postSlice";
-import PostCard from "../components/PostCard";
+import TweetCard from "../components/TweetCard";
 import { trpc } from "../utils/trpc";
 
 const ExplorePage = () => {
-  const posts = trpc.useQuery(["post.getAll"]).data;
+  const tweets = trpc.useQuery(["tweet.getAll"]).data;
 
   return (
     <Container>
@@ -23,13 +20,13 @@ const ExplorePage = () => {
       </section>
       <section className="col-span-2">
         <SearchInput />
-        {posts ? (
-          posts.map((post) => (
-            <PostCard
-              key={post.id}
-              sender={post.user}
-              content={post.content}
-              createdAt={post.createdAt}
+        {tweets ? (
+          tweets.map((tweet) => (
+            <TweetCard
+              key={tweet.id}
+              sender={tweet.user.username}
+              text={tweet.text}
+              createdAt={tweet.createdAt}
             />
           ))
         ) : (

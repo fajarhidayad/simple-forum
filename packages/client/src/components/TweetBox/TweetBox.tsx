@@ -8,23 +8,15 @@ const TweetBox = () => {
   // const dispatch = useAppDispatch();
 
   const utils = trpc.useContext();
-  const postMutation = trpc.useMutation("post.createPost", {
+  const postMutation = trpc.useMutation("tweet.createTweet", {
     onSuccess(input) {
-      utils.invalidateQueries(["post.getAll"]);
+      utils.invalidateQueries(["tweet.getAll"]);
     },
   });
 
   const submitPost = () => {
     if (content) {
-      const post = {
-        id: `${+new Date()}`,
-        user: "Fajar",
-        content,
-        createdAt: Date.now(),
-      };
-
-      // dispatch(addPost(post));
-      postMutation.mutate({ content, user: "Surya" });
+      postMutation.mutate({ text: content, user: "Surya" });
       setContent("");
     }
   };

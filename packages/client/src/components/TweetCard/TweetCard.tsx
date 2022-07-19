@@ -5,13 +5,13 @@ import CommentSection from "../CommentSection";
 import ButtonAction from "./ButtonAction";
 import CommentInput from "./CommentInput";
 
-interface PostCardProps {
+interface TweetCardProps {
   sender: string;
   createdAt: Date;
-  content: string;
+  text: string;
 }
 
-const PostCard = ({ sender, createdAt, content }: PostCardProps) => {
+const TweetCard = ({ sender, createdAt, text }: TweetCardProps) => {
   const monthNames = [
     "January",
     "February",
@@ -44,7 +44,7 @@ const PostCard = ({ sender, createdAt, content }: PostCardProps) => {
           <p className="font-noto text-xs text-gray-400">{date}</p>
         </div>
       </div>
-      <p className="font-noto mt-4">{content}</p>
+      <p className="font-noto mt-4">{text}</p>
       <div className="flex justify-end space-x-3 text-xs text-gray-400 mt-4">
         <button>10 Comments</button>
         <button>1 Shared</button>
@@ -65,4 +65,4 @@ const PostCard = ({ sender, createdAt, content }: PostCardProps) => {
   );
 };
 
-export default PostCard;
+export default TweetCard;

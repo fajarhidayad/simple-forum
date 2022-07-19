@@ -4,7 +4,8 @@
   "description": "Fullstack simple forum",
   "main": "src/server.ts",
   "scripts": {
-    "start": "ts-node-dev src/server.ts"
+    "start": "ts-node-dev src/server.ts",
+    "db:seed": "ts-node src/db/seed.ts"
   },
   "repository": {
     "type": "git",
