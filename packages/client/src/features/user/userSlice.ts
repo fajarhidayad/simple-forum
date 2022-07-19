@@ -17,12 +17,13 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    getInfo(state, action: PayloadAction<User>) {
+    setInfo(state, action: PayloadAction<User>) {
       state.user = action.payload;
     },
   },
 });
 
 export const getUser = (state: RootState) => state.user;
+export const { setInfo } = userSlice.actions;
 
 export default userSlice.reducer;

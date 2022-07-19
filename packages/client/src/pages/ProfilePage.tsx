@@ -7,10 +7,19 @@ import CardSide from "../components/CardSide";
 import CardSideButton from "../components/CardSide/CardSideButton";
 import Overlay from "../components/Overlay";
 import { trpc } from "../utils/trpc";
+import { useLocation } from "react-router-dom";
 
 const ProfilePage = () => {
   const [overlay, setOverlay] = useState(false);
   const [overlayTitle, setOverlayTitle] = useState("");
+  const username = useLocation().pathname.slice(1);
+
+  const {
+    data,
+    isLoading: isLoadingUser,
+    isError: isErrorUser,
+    error: errorUser,
+  } = trpc.useQuery(["user.getUser", username]);
 
   const {
     data: tweets,
@@ -35,7 +44,10 @@ const ProfilePage = () => {
       />
       <ProfileImage />
       <Container className="-translate-y-[100px]">
-        <ProfileInfo showOverlayFn={showOverlay} />
+        <ProfileInfo
+          showOverlayFn={showOverlay}
+          name={data ? `${data.user.firstName} ${data.user.lastName}` : ""}
+        />
         <CardSide>
           <CardSideButton text="Tweets" active />
           <CardSideButton text="Tweets & replies" />

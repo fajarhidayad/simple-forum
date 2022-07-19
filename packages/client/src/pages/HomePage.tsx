@@ -10,7 +10,7 @@ const HomePage = () => {
     error,
     isError,
     isLoading,
-  } = trpc.useQuery(["tweet.getAll"], { retryOnMount: true });
+  } = trpc.useQuery(["tweet.getAll"]);
 
   const loadingState = isLoading && <h1>Loading...</h1>;
   const errorState = isError && <h1>{error.message}</h1>;

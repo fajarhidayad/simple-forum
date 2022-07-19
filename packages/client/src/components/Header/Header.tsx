@@ -4,9 +4,13 @@ import HeaderLink from "./HeaderLink";
 import { IoMdArrowDropdown } from "react-icons/io";
 import PopOverMenu from "./PopOverMenu";
 import useClickOutside from "../../hooks/useClickOutside";
+import { useAppSelector } from "../../app/hooks";
+import { getUser } from "../../features/user/userSlice";
 
 const Header = () => {
   const [menu, setMenu] = useState(false);
+  const { user } = useAppSelector(getUser);
+
   const menuRef = useRef<HTMLButtonElement | null>(null);
 
   const handleClickMenu = () => setMenu(!menu);
@@ -20,7 +24,7 @@ const Header = () => {
           to="/"
           className="font-bold text-lg font-noto text-slate-700 self-center"
         >
-          FunForum
+          Twister
         </Link>
 
         <ul className="hidden md:flex space-x-10 items-center font-semibold text-sm py-7">
@@ -49,9 +53,11 @@ const Header = () => {
           <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold">
             IMG
           </div>
-          <h5 className="font-not font-bold">Jack Sparrow</h5>
+          <h5 className="font-not font-bold">
+            {user?.firstName} {user?.lastName}
+          </h5>
           <IoMdArrowDropdown />
-          <PopOverMenu active={menu} />
+          <PopOverMenu active={menu} linkProfile={user?.username!} />
         </button>
       </nav>
     </header>

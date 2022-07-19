@@ -6,9 +6,10 @@ import { signOut } from "../../features/auth/authSlice";
 
 interface PopOverMenuProps {
   active: boolean;
+  linkProfile: string;
 }
 
-const PopOverMenu = ({ active }: PopOverMenuProps) => {
+const PopOverMenu = ({ active, linkProfile }: PopOverMenuProps) => {
   const dispatch = useAppDispatch();
 
   const showMenu = active ? "absolute" : "hidden";
@@ -22,7 +23,7 @@ const PopOverMenu = ({ active }: PopOverMenuProps) => {
       className={`bg-white shadow rounded-lg p-4 -bottom-7 md:-bottom-2 right-3 translate-y-full w-full transition-all duration-200 ${showMenu}`}
     >
       <Link
-        to="/profile"
+        to={`/${linkProfile}`}
         className="text-xs font-noto text-gray-600 font-medium flex items-center hover:bg-gray-200 p-3 rounded-lg transition-all duration-150 mb-1"
       >
         <FaUserCircle size={16} className="mr-3" />
