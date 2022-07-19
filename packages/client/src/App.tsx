@@ -15,14 +15,15 @@ import SignUpPage from "./pages/SignUpPage";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { trpc } from "./utils/trpc";
+import { useAppSelector } from "./app/hooks";
+import { getUserInfo } from "./features/auth/authSlice";
+import RedirectPage from "./pages/RedirectPage";
 
 function App() {
-  const [user, setUser] = useState(false);
-
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: "http://localhost:5000/trpc",
+      url: "http://localhost:5000/api/trpc",
     })
   );
 
@@ -30,35 +31,43 @@ function App() {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          <BrowserRouter>
-            {user ? (
-              <>
-                <Header />
-                <div className="pt-[76px]">
-                  <Routes>
-                    <Route path="/">
-                      <Route index element={<HomePage />} />
-                      <Route path=":username" element={<ProfilePage />} />
-                      <Route path="explore" element={<ExplorePage />} />
-                      <Route path="bookmark" element={<BookmarkPage />} />
-                    </Route>
-                  </Routes>
-                </div>
-                <BottomNav />
-              </>
-            ) : (
-              <Routes>
-                <Route path="/" element={<SignInPage />} />
-                <Route path="/login" element={<SignInPage />} />
-                <Route path="/sign-up" element={<SignUpPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            )}
-          </BrowserRouter>
+          <MainRouter />
         </Provider>
       </QueryClientProvider>
     </trpc.Provider>
   );
 }
+
+const MainRouter = () => {
+  const userInfo = useAppSelector(getUserInfo);
+
+  return (
+    <BrowserRouter>
+      {userInfo ? (
+        <>
+          <Header />
+          <div className="pt-[76px]">
+            <Routes>
+              <Route path="/">
+                <Route index element={<HomePage />} />
+                <Route path=":username" element={<ProfilePage />} />
+                <Route path="explore" element={<ExplorePage />} />
+                <Route path="bookmark" element={<BookmarkPage />} />
+              </Route>
+            </Routes>
+          </div>
+          <BottomNav />
+        </>
+      ) : (
+        <Routes>
+          <Route path="/" element={<SignInPage />} />
+          <Route path="/login" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="*" element={<RedirectPage />} />
+        </Routes>
+      )}
+    </BrowserRouter>
+  );
+};
 
 export default App;

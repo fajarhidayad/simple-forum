@@ -16,8 +16,10 @@ model Post {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      String   @db.VarChar(255)
   content   String   @db.VarChar(255)
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 }
 
 model User {
@@ -30,4 +32,6 @@ model User {
   username  String @unique @db.VarChar(100)
   email     String @unique
   password  String @db.VarChar(255)
+
+  posts Post[]
 }

@@ -1,13 +1,21 @@
 import { FaCog, FaUserCircle } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
+import { signOut } from "../../features/auth/authSlice";
 
 interface PopOverMenuProps {
   active: boolean;
 }
 
 const PopOverMenu = ({ active }: PopOverMenuProps) => {
+  const dispatch = useAppDispatch();
+
   const showMenu = active ? "absolute" : "hidden";
+
+  const handleSignOut = () => {
+    dispatch(signOut());
+  };
 
   return (
     <div
@@ -28,13 +36,13 @@ const PopOverMenu = ({ active }: PopOverMenuProps) => {
         Settings
       </Link>
       <hr className="border-gray-300" />
-      <Link
-        to="/settings"
+      <a
+        onClick={handleSignOut}
         className="text-xs font-noto text-red-500 font-medium flex items-center hover:bg-gray-200 p-3 rounded-lg transition-all duration-150 mt-1"
       >
         <IoIosLogOut size={16} className="mr-3" />
         Logout
-      </Link>
+      </a>
     </div>
   );
 };

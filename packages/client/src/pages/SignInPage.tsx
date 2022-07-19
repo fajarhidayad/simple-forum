@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputForm from "../components/InputForm/InputForm";
+import { trpc } from "../utils/trpc";
+import { useAppDispatch } from "../app/hooks";
+import { signIn } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 interface SignInForm {
   email: string;
@@ -20,6 +24,10 @@ const schema = z.object({
 });
 
 const SignInPage: React.FC = () => {
+  const loginMutation = trpc.useMutation("auth.signIn");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -27,8 +35,22 @@ const SignInPage: React.FC = () => {
   } = useForm<SignInForm>({ resolver: zodResolver(schema) });
 
   const onClickSubmit = (data: SignInForm) => {
-    console.log(data);
+    loginMutation.mutateAsync({
+      email: data.email,
+      password: data.password,
+    });
   };
+
+  useEffect(() => {
+    const checkSignIn = () => {
+      if (loginMutation.isSuccess) {
+        dispatch(signIn(loginMutation.data));
+        navigate("/", { replace: true });
+      }
+    };
+
+    checkSignIn();
+  }, [loginMutation.isSuccess]);
 
   return (
     <main className="bg-gray-200 h-screen w-screen flex items-center justify-center">
@@ -66,10 +88,17 @@ const SignInPage: React.FC = () => {
           <div className="my-3"></div>
           <button
             type="submit"
-            className="bg-blue-500 text-white py-4 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-all duration-150"
+            className="bg-blue-500 text-white py-4 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-all duration-150 disabled:bg-blue-400"
+            disabled={loginMutation.isLoading}
           >
             Sign In
           </button>
+
+          {loginMutation.isError && (
+            <p className="text-red-500 mt-5 text-center">
+              {loginMutation.error.message}
+            </p>
+          )}
         </form>
       </div>
     </main>

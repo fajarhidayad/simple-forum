@@ -15,12 +15,19 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use(
-  "/trpc",
+  "/api/trpc",
   trpcExpress.createExpressMiddleware({
     router: appRouter,
     createContext,
   })
 );
+
+app.use((req, res) => {
+  res.status(404).json({
+    code: 404,
+    message: "404 Error, Endpoint not found",
+  });
+});
 
 const port = process.env.NODE_PORT;
 
