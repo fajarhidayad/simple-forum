@@ -7,7 +7,7 @@ Built with React & TypeScript for Client Side.<br/>
 - **Client**: React - Vite not CRA
 - **Styling**: Tailwind CSS - it's a must if you haven't tried it, I suggest do it now.
 - **State Management**: Redux-Toolkit
-- **Form Validationt**: React-Hook-Form
+- **Form Validation**: React-Hook-Form
 - **Schema Validation**: Zod
 - **Server**: Express
 - **ORM**: Prisma
@@ -16,8 +16,8 @@ Built with React & TypeScript for Client Side.<br/>
 - **Deployment**: Vercel
 
 ## TODO
-- [❌] adding authentication & authorization
-- [❌] user can post
+- [✅] adding authentication & authorization
+- [✅] user can post
 - [❌] user can comment
 - [❌] user can retweet
 - [❌] user can like post

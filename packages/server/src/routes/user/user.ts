@@ -3,16 +3,7 @@ import { z } from "zod";
 import { prisma } from "../../db/prisma";
 import { createProtectedRouter } from "../../middleware/authMiddleware";
 import { decodeToken } from "../../utils/jwt";
-
-function exclude<User, Key extends keyof User>(
-  user: User,
-  ...keys: Key[]
-): Omit<User, Key> {
-  for (let key of keys) {
-    delete user[key];
-  }
-  return user;
-}
+import exclude from "../../utils/excludeQuery";
 
 const user = createProtectedRouter()
   .query("getInfo", {
@@ -43,7 +34,9 @@ const user = createProtectedRouter()
     // get User Profile by Input ID
     input: z.string(),
     async resolve({ input }) {
-      const user = await prisma.user.findUnique({ where: { username: input } });
+      const user = await prisma.user.findUniqueOrThrow({
+        where: { username: input },
+      });
 
       if (!user) {
         throw new TRPCError({

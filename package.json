@@ -5,6 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "client": "yarn --cwd packages/client dev",
+    "server": "yarn --cwd packages/server start",
     "start": "concurrently \"wsrun --parallel start\""
   },
   "workspaces": [

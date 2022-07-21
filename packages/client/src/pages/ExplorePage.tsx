@@ -4,9 +4,26 @@ import CardSideButton from "../components/CardSide/CardSideButton";
 import SearchInput from "../components/SearchInput";
 import TweetCard from "../components/TweetCard";
 import { trpc } from "../utils/trpc";
+import SkeletonTweetCard from "../components/TweetCard/SkeletonTweetCard";
 
 const ExplorePage = () => {
-  const tweets = trpc.useQuery(["tweet.getAll"]).data;
+  const {
+    data: tweets,
+    isLoading,
+    isError,
+    error,
+  } = trpc.useQuery(["tweet.getAll"]);
+
+  const loadingState = isLoading && (
+    <>
+      <SkeletonTweetCard />
+      <SkeletonTweetCard />
+      <SkeletonTweetCard />
+    </>
+  );
+  const errorState = isError && (
+    <h1 className="text-xl text-red-500">{error.message}</h1>
+  );
 
   return (
     <Container>
@@ -20,6 +37,8 @@ const ExplorePage = () => {
       </section>
       <section className="col-span-2">
         <SearchInput />
+        {loadingState}
+        {errorState}
         {tweets ? (
           tweets.map((tweet) => (
             <TweetCard

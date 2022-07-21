@@ -13,20 +13,22 @@ const HomePage = () => {
     isLoading,
   } = trpc.useQuery(["tweet.getAll"]);
 
-  const loadingState = isLoading && <h1>Loading...</h1>;
-  const errorState = isError && <h1>{error.message}</h1>;
+  const loadingState = isLoading && (
+    <>
+      <SkeletonTweetCard />
+      <SkeletonTweetCard />
+      <SkeletonTweetCard />
+    </>
+  );
+  const errorState = isError && (
+    <h1 className="text-xl text-red-500">{error.message}</h1>
+  );
 
   return (
     <Container>
       <section className="col-span-2">
         <TweetBox />
-        {loadingState && (
-          <>
-            <SkeletonTweetCard />
-            <SkeletonTweetCard />
-            <SkeletonTweetCard />
-          </>
-        )}
+        {loadingState}
         {errorState}
         {tweets &&
           tweets.map((tweet) => (

@@ -9,12 +9,12 @@ import { trpc } from "../utils/trpc";
 const Unauthenticated = () => {
   const url = import.meta.env.SERVER_URL
     ? `${import.meta.env.SERVER_URL}`
-    : "http://localhost:5000/api/trpc";
+    : "http://localhost:5000";
 
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url,
+      url: `${url}/api/trpc`,
     })
   );
 

@@ -8,6 +8,8 @@ import CardSideButton from "../components/CardSide/CardSideButton";
 import Overlay from "../components/Overlay";
 import { trpc } from "../utils/trpc";
 import { useLocation } from "react-router-dom";
+import SkeletonTweetCard from "../components/TweetCard/SkeletonTweetCard";
+import SkeletonProfileInfo from "../components/ProfileInfo/SkeletonProfileInfo";
 
 const ProfilePage = () => {
   const [overlay, setOverlay] = useState(false);
@@ -26,9 +28,11 @@ const ProfilePage = () => {
     error,
     isError,
     isLoading,
-  } = trpc.useQuery(["tweet.getAll"]);
+  } = trpc.useQuery(["tweet.getUserTweet", username]);
   const loadingState = isLoading && <h1>Loading...</h1>;
-  const errorState = isError && <h1>{error.message}</h1>;
+  const errorState = isError && (
+    <h1 className="text-2xl text-center text-gray-500">{error.message}</h1>
+  );
 
   const showOverlay = (type: string) => {
     setOverlayTitle(type);
@@ -44,10 +48,15 @@ const ProfilePage = () => {
       />
       <ProfileBackgroundImage />
       <Container className="-translate-y-[100px]">
-        <ProfileInfo
-          showOverlayFn={showOverlay}
-          name={data ? `${data.user.firstName} ${data.user.lastName}` : ""}
-        />
+        {isLoading ? (
+          <SkeletonProfileInfo />
+        ) : (
+          <ProfileInfo
+            showOverlayFn={showOverlay}
+            name={data ? `${data.user.firstName} ${data.user.lastName}` : ""}
+          />
+        )}
+
         <CardSide>
           <CardSideButton text="Tweets" active />
           <CardSideButton text="Tweets & replies" />
@@ -55,7 +64,12 @@ const ProfilePage = () => {
           <CardSideButton text="Likes" />
         </CardSide>
         <section className="col-span-2">
-          {loadingState}
+          {loadingState && (
+            <>
+              <SkeletonTweetCard />
+              <SkeletonTweetCard />
+            </>
+          )}
           {errorState}
           {tweets &&
             tweets.map((tweet) => (

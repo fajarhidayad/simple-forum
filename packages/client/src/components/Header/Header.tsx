@@ -39,7 +39,6 @@ const Header = () => {
             <HeaderLink href="/bookmark">Bookmarks</HeaderLink>
           </li>
         </ul>
-
         {/* <a
           href="#"
           className="bg-blue-500 text-sm text-white font-noto font-medium px-6 py-2 rounded hover:bg-blue-600 transition-all duration-200 hidden md:block self-center"
@@ -54,9 +53,13 @@ const Header = () => {
           <div className="w-10 h-10 text-gray-700 rounded-full flex items-center justify-center font-bold">
             <FaUserCircle size={40} />
           </div>
-          <h5 className="font-not font-bold">
-            {user?.firstName} {user?.lastName}
-          </h5>
+          {user ? (
+            <h5 className="font-not font-bold">
+              {user.firstName} {user.lastName}
+            </h5>
+          ) : (
+            <div className="bg-gray-200 w-20 h-4 animate-pulse rounded-sm" />
+          )}
           <IoMdArrowDropdown />
           <PopOverMenu active={menu} linkProfile={user?.username!} />
         </button>

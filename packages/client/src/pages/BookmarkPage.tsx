@@ -2,6 +2,7 @@ import CardSide from "../components/CardSide";
 import CardSideButton from "../components/CardSide/CardSideButton";
 import Container from "../components/Container";
 import TweetCard from "../components/TweetCard";
+import SkeletonTweetCard from "../components/TweetCard/SkeletonTweetCard";
 import { trpc } from "../utils/trpc";
 
 const BookmarkPage = () => {
@@ -12,7 +13,13 @@ const BookmarkPage = () => {
     error,
   } = trpc.useQuery(["tweet.getAll"]);
 
-  const loadingState = isLoading && <h1>Loading...</h1>;
+  const loadingState = isLoading && (
+    <>
+      <SkeletonTweetCard />
+      <SkeletonTweetCard />
+      <SkeletonTweetCard />
+    </>
+  );
   const errorState = isError && <h1>{error.message}</h1>;
 
   return (
