@@ -1,17 +1,20 @@
 import { BiComment, BiShare } from "react-icons/bi";
 import { BsHeart, BsBookmark } from "react-icons/bs";
+import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import CommentSection from "../CommentSection";
 import ButtonAction from "./ButtonAction";
 import CommentInput from "./CommentInput";
+import SkeletonTweetCard from "./SkeletonTweetCard";
 
 interface TweetCardProps {
-  sender: string;
+  fullName: string;
+  username: string;
   createdAt: Date;
   text: string;
 }
 
-const TweetCard = ({ sender, createdAt, text }: TweetCardProps) => {
+const TweetCard = ({ fullName, createdAt, text, username }: TweetCardProps) => {
   const monthNames = [
     "January",
     "February",
@@ -29,17 +32,17 @@ const TweetCard = ({ sender, createdAt, text }: TweetCardProps) => {
   const date = new Date(createdAt).toString();
 
   return (
-    <article className="bg-white rounded-lg py-4 px-5 shadow-sm mx-auto mb-7">
+    <article className="bg-white rounded-lg py-4 px-5 shadow-sm mx-auto mb-5">
       <div className="flex">
-        <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold mr-3">
-          IMG
+        <div className="w-10 h-10 text-gray-700 rounded-full flex items-center justify-center font-bold mr-2">
+          <FaUserCircle size={40} />
         </div>
         <div>
           <Link
-            to={`/coba`}
+            to={`/${username}`}
             className="font-poppins font-medium hover:underline"
           >
-            {sender}
+            {fullName}
           </Link>
           <p className="font-noto text-xs text-gray-400">{date}</p>
         </div>
@@ -60,7 +63,7 @@ const TweetCard = ({ sender, createdAt, text }: TweetCardProps) => {
 
       <CommentInput />
 
-      <CommentSection />
+      {/* <CommentSection /> */}
     </article>
   );
 };

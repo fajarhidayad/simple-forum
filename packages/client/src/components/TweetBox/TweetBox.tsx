@@ -6,7 +6,8 @@ import { trpc } from "../../utils/trpc";
 
 const TweetBox = () => {
   const [content, setContent] = useState("");
-  // const dispatch = useAppDispatch();
+
+  const { data } = trpc.useQuery(["user.getInfo"]);
 
   const utils = trpc.useContext();
   const postMutation = trpc.useMutation("tweet.createTweet", {
@@ -16,8 +17,11 @@ const TweetBox = () => {
   });
 
   const submitPost = () => {
-    if (content) {
-      postMutation.mutate({ text: content, user: "Surya" });
+    if (content && data) {
+      postMutation.mutateAsync({
+        text: content,
+        userId: data.user.id,
+      });
       setContent("");
     }
   };

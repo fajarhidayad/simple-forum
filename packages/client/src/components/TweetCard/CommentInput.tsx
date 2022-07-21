@@ -1,10 +1,11 @@
+import { FaUserCircle } from "react-icons/fa";
 import { IoSendSharp } from "react-icons/io5";
 
 const CommentInput = () => {
   return (
     <div className="mt-3 flex items-center">
-      <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold mr-3">
-        IMG
+      <div className="w-10 h-10 text-gray-700 rounded-full flex items-center justify-center font-bold mr-2">
+        <FaUserCircle size={40} />
       </div>
       <input
         type="text"

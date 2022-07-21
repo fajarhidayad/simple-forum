@@ -16,11 +16,12 @@ function exclude<User, Key extends keyof User>(
 
 const user = createProtectedRouter()
   .query("getInfo", {
+    // Get User Auth by Token
     async resolve({ ctx }) {
       const token = await ctx.token;
       const { id } = decodeToken(token!) as { id: number };
 
-      const user = await prisma.user.findFirst({
+      const user = await prisma.user.findUnique({
         where: {
           id,
         },
@@ -38,7 +39,8 @@ const user = createProtectedRouter()
       };
     },
   })
-  .query("getUser", {
+  .query("getUserProfile", {
+    // get User Profile by Input ID
     input: z.string(),
     async resolve({ input }) {
       const user = await prisma.user.findUnique({ where: { username: input } });

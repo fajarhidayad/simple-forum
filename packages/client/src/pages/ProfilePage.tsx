@@ -19,7 +19,7 @@ const ProfilePage = () => {
     isLoading: isLoadingUser,
     isError: isErrorUser,
     error: errorUser,
-  } = trpc.useQuery(["user.getUser", username]);
+  } = trpc.useQuery(["user.getUserProfile", username]);
 
   const {
     data: tweets,
@@ -61,7 +61,8 @@ const ProfilePage = () => {
             tweets.map((tweet) => (
               <TweetCard
                 key={tweet.id}
-                sender={tweet.user.username}
+                fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
+                username={tweet.user.username}
                 createdAt={tweet.createdAt}
                 text={tweet.text}
               />

@@ -23,6 +23,10 @@ const tweets = createProtectedRouter()
   .mutation("createTweet", {
     input: createTweetSchema,
     resolve: async ({ input }) => {
+      await prisma.user.findUniqueOrThrow({
+        where: { id: input.userId },
+      });
+
       return await prisma.tweet.create({ data: { ...input } });
     },
   });

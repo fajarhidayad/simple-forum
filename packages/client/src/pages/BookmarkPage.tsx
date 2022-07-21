@@ -32,7 +32,8 @@ const BookmarkPage = () => {
           tweets.map((tweet) => (
             <TweetCard
               key={tweet.id}
-              sender={tweet.user.username}
+              fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
+              username={tweet.user.username}
               text={tweet.text}
               createdAt={tweet.createdAt}
             />

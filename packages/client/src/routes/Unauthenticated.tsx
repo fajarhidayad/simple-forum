@@ -7,10 +7,14 @@ import SignUpPage from "../pages/SignUpPage";
 import { trpc } from "../utils/trpc";
 
 const Unauthenticated = () => {
+  const url = import.meta.env.SERVER_URL
+    ? `${import.meta.env.SERVER_URL}`
+    : "http://localhost:5000/api/trpc";
+
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: "http://localhost:5000/api/trpc",
+      url,
     })
   );
 

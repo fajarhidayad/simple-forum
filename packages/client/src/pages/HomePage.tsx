@@ -3,6 +3,7 @@ import TweetBox from "../components/TweetBox";
 import Container from "../components/Container";
 import HomeSideBar from "../components/HomeSideBar";
 import { trpc } from "../utils/trpc";
+import SkeletonTweetCard from "../components/TweetCard/SkeletonTweetCard";
 
 const HomePage = () => {
   const {
@@ -19,13 +20,20 @@ const HomePage = () => {
     <Container>
       <section className="col-span-2">
         <TweetBox />
-        {loadingState}
+        {loadingState && (
+          <>
+            <SkeletonTweetCard />
+            <SkeletonTweetCard />
+            <SkeletonTweetCard />
+          </>
+        )}
         {errorState}
         {tweets &&
           tweets.map((tweet) => (
             <TweetCard
               key={tweet.id}
-              sender={tweet.user.username}
+              fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
+              username={tweet.user.username}
               createdAt={tweet.createdAt}
               text={tweet.text}
             />

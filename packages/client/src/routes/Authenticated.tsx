@@ -18,10 +18,14 @@ interface AuthenticatedProps {
 }
 
 const Authenticated: React.FC<AuthenticatedProps> = ({ token }) => {
+  const url = import.meta.env.SERVER_URL
+    ? `${import.meta.env.SERVER_URL}`
+    : "http://localhost:5000/api/trpc";
+
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: "http://localhost:5000/api/trpc",
+      url,
       headers() {
         return {
           Authorization: `Bearer ${token}`,
