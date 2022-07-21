@@ -1,4 +1,5 @@
 import React from "react";
+import { FaUserCircle } from "react-icons/fa";
 import { MdPersonAdd } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -16,7 +17,9 @@ const RecommendFollow = ({
   return (
     <div className="border-b border-b-gray-300 py-6">
       <div className="flex items-center mb-4">
-        <div className="w-10 h-10 rounded-full bg-gray-500 mr-3"></div>
+        <div className="w-10 h-10 text-gray-700 rounded-full flex items-center justify-center font-bold mr-3">
+          <FaUserCircle size={40} />
+        </div>
         <div className="mr-auto">
           <Link to="/user" className="font-semibold font-noto hover:underline">
             {name}

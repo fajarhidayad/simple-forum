@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BsCardImage } from "react-icons/bs";
+import { FaUserCircle } from "react-icons/fa";
 import { IoEarth } from "react-icons/io5";
 import { trpc } from "../../utils/trpc";
 
@@ -27,8 +28,8 @@ const TweetBox = () => {
         Say anything
       </h4>
       <div className="mt-3 flex">
-        <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold mr-3">
-          IMG
+        <div className="w-10 h-10 text-gray-700 rounded-full flex items-center justify-center font-bold mr-2">
+          <FaUserCircle size={40} />
         </div>
         <div className="flex-1">
           <textarea

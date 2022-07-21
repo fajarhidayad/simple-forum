@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import HeaderLink from "./HeaderLink";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { FaUserCircle } from "react-icons/fa";
 import PopOverMenu from "./PopOverMenu";
 import useClickOutside from "../../hooks/useClickOutside";
 import { useAppSelector } from "../../app/hooks";
@@ -50,8 +51,8 @@ const Header = () => {
           onClick={handleClickMenu}
           ref={menuRef}
         >
-          <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold">
-            IMG
+          <div className="w-10 h-10 text-gray-700 rounded-full flex items-center justify-center font-bold">
+            <FaUserCircle size={40} />
           </div>
           <h5 className="font-not font-bold">
             {user?.firstName} {user?.lastName}

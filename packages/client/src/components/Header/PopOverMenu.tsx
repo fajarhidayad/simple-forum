@@ -20,7 +20,7 @@ const PopOverMenu = ({ active, linkProfile }: PopOverMenuProps) => {
 
   return (
     <div
-      className={`bg-white shadow rounded-lg p-4 -bottom-7 md:-bottom-2 right-3 translate-y-full w-full transition-all duration-200 ${showMenu}`}
+      className={`bg-white shadow rounded-lg p-4 -bottom-7 md:-bottom-2 right-3 translate-y-full w-[190px] transition-all duration-200 ${showMenu}`}
     >
       <Link
         to={`/${linkProfile}`}

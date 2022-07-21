@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Container from "../components/Container";
 import TweetCard from "../components/TweetCard";
-import ProfileImage from "../components/ProfileImage";
+import ProfileBackgroundImage from "../components/ProfileBackgroundImage";
 import ProfileInfo from "../components/ProfileInfo";
 import CardSide from "../components/CardSide";
 import CardSideButton from "../components/CardSide/CardSideButton";
@@ -42,7 +42,7 @@ const ProfilePage = () => {
         onCloseFn={() => setOverlay(false)}
         title={overlayTitle}
       />
-      <ProfileImage />
+      <ProfileBackgroundImage />
       <Container className="-translate-y-[100px]">
         <ProfileInfo
           showOverlayFn={showOverlay}

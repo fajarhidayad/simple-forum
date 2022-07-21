@@ -1,4 +1,5 @@
 import React from "react";
+import { FaUserCircle } from "react-icons/fa";
 import { MdPersonAdd } from "react-icons/md";
 
 interface ProfileInfoProps {
@@ -14,8 +15,10 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
 }) => {
   return (
     <div className="bg-white rounded-lg min-h-[163px] shadow p-6 col-span-3">
-      <div className="flex flex-col md:flex-row items-center text-center md:text-left md:items-start space-y-3 md:space-y-0">
-        <div className="w-[120px] h-[120px] bg-gray-500 rounded-full mr-6"></div>
+      <div className="flex flex-col md:flex-row items-center text-center md:text-left gap-3 md:items-start space-y-3 md:space-y-0">
+        <div className="w-[120px] h-[120px] text-gray-700 rounded-full flex items-center justify-center font-bold">
+          <FaUserCircle size={110} />
+        </div>
         <div className="md:mr-auto flex flex-col">
           <div className="flex flex-col md:flex-row md:space-x-6 items-center">
             <h3 className="text-2xl font-poppins font-semibold">
@@ -39,7 +42,11 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             </div>
           </div>
           <p className="text-lg font-noto mt-3 text-gray-500 max-w-[500px]">
-            {description}
+            {description ? (
+              description
+            ) : (
+              <span className="italic text-base">No description</span>
+            )}
           </p>
         </div>
         {name && (
