@@ -18,8 +18,9 @@ model Tweet {
   updatedAt DateTime @updatedAt
   text      String   @db.VarChar(255)
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
+  user    User      @relation(fields: [userId], references: [id])
+  userId  Int
+  Comment Comment[]
 }
 
 model User {
@@ -33,5 +34,17 @@ model User {
   email     String @unique
   password  String @db.VarChar(255)
 
-  tweets Tweet[]
+  tweets   Tweet[]
+  comments Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  comment   String   @db.VarChar(255)
+
+  user    User  @relation(fields: [userId], references: [id])
+  userId  Int
+  tweet   Tweet @relation(fields: [tweetId], references: [id])
+  tweetId Int
 }

@@ -3,7 +3,6 @@ import { createTweetSchema } from "./schema";
 import { createProtectedRouter } from "../../middleware/authMiddleware";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import exclude from "../../utils/excludeQuery";
 
 const tweets = createProtectedRouter()
   .query("getAll", {

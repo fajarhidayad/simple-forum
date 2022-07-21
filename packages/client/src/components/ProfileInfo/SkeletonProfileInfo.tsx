@@ -13,9 +13,9 @@ const SkeletonProfileInfo = () => {
               <div className="h-3 w-24 bg-gray-300 flex space-x-1 items-baseline animate-pulse rounded-sm"></div>
             </div>
           </div>
-          <div className="h-4 font-noto mt-3 bg-gray-300 w-[500px] animate-pulse"></div>
-          <div className="h-4 font-noto mt-3 bg-gray-300 w-[500px] animate-pulse"></div>
-          <div className="h-4 font-noto mt-3 bg-gray-300 w-[500px] animate-pulse"></div>
+          <div className="h-4 font-noto mt-3 bg-gray-300 w-full animate-pulse"></div>
+          <div className="h-4 font-noto mt-3 bg-gray-300 w-full animate-pulse"></div>
+          <div className="h-4 font-noto mt-3 bg-gray-300 w-full animate-pulse"></div>
         </div>
       </div>
     </div>
