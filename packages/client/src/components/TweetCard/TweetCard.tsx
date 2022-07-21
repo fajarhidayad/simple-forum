@@ -5,16 +5,22 @@ import { Link } from "react-router-dom";
 import CommentSection from "../CommentSection";
 import ButtonAction from "./ButtonAction";
 import CommentInput from "./CommentInput";
-import SkeletonTweetCard from "./SkeletonTweetCard";
 
 interface TweetCardProps {
+  id: number;
   fullName: string;
   username: string;
   createdAt: Date;
   text: string;
 }
 
-const TweetCard = ({ fullName, createdAt, text, username }: TweetCardProps) => {
+const TweetCard = ({
+  fullName,
+  createdAt,
+  text,
+  username,
+  id,
+}: TweetCardProps) => {
   const monthNames = [
     "January",
     "February",
@@ -61,9 +67,9 @@ const TweetCard = ({ fullName, createdAt, text, username }: TweetCardProps) => {
         <ButtonAction icon={<BsBookmark size={16} />} text="Save" />
       </div>
 
-      <CommentInput />
+      <CommentInput tweetId={id} />
 
-      {/* <CommentSection /> */}
+      <CommentSection postId={id} />
     </article>
   );
 };

@@ -43,6 +43,7 @@ const ExplorePage = () => {
           tweets.map((tweet) => (
             <TweetCard
               key={tweet.id}
+              id={tweet.id}
               fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
               username={tweet.user.username}
               text={tweet.text}

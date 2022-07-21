@@ -18,10 +18,7 @@ const TweetBox = () => {
 
   const submitPost = () => {
     if (content && data) {
-      postMutation.mutateAsync({
-        text: content,
-        userId: data.user.id,
-      });
+      postMutation.mutateAsync(content);
       setContent("");
     }
   };

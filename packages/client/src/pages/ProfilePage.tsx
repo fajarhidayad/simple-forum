@@ -75,6 +75,7 @@ const ProfilePage = () => {
             tweets.map((tweet) => (
               <TweetCard
                 key={tweet.id}
+                id={tweet.id}
                 fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
                 username={tweet.user.username}
                 createdAt={tweet.createdAt}

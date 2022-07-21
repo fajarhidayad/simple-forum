@@ -1,12 +1,16 @@
 import { prisma } from "../../db/prisma";
-import { createTweetSchema } from "./schema";
 import { createProtectedRouter } from "../../middleware/authMiddleware";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { validateToken } from "../../utils/jwt";
+import { MyJWTPayload } from "../../utils/jwt";
 
 const tweets = createProtectedRouter()
   .query("getAll", {
-    resolve: async () => {
+    resolve: async ({ ctx }) => {
+      const token = await ctx.token;
+      validateToken(token as string);
+
       const tweets = await prisma.tweet.findMany({
         take: 10,
         orderBy: {
@@ -42,13 +46,17 @@ const tweets = createProtectedRouter()
     },
   })
   .mutation("createTweet", {
-    input: createTweetSchema,
-    resolve: async ({ input }) => {
+    input: z.string().max(255),
+    resolve: async ({ input, ctx }) => {
+      const token = await ctx.token;
+      const decoded = validateToken(token as string) as unknown;
+      const { id } = decoded as MyJWTPayload;
+
       await prisma.user.findUniqueOrThrow({
-        where: { id: input.userId },
+        where: { id },
       });
 
-      return await prisma.tweet.create({ data: { ...input } });
+      return await prisma.tweet.create({ data: { text: input, userId: id } });
     },
   });
 

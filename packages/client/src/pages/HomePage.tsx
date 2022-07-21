@@ -21,7 +21,7 @@ const HomePage = () => {
     </>
   );
   const errorState = isError && (
-    <h1 className="text-xl text-red-500">{error.message}</h1>
+    <h1 className="text-xl text-red-500 text-center">{error.message}</h1>
   );
 
   return (
@@ -34,6 +34,7 @@ const HomePage = () => {
           tweets.map((tweet) => (
             <TweetCard
               key={tweet.id}
+              id={tweet.id}
               fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
               username={tweet.user.username}
               createdAt={tweet.createdAt}
