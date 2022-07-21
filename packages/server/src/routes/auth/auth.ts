@@ -60,7 +60,6 @@ const auth = createRouter()
       const hashed = await hashPassword(input.password);
       const user = {
         ...input,
-        username: "@" + input.username,
         password: hashed,
       };
 

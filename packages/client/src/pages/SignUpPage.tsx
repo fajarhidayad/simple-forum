@@ -1,10 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputForm from "../components/InputForm/InputForm";
 import { trpc } from "../utils/trpc";
+import { useAppDispatch } from "../app/hooks";
+import { signIn } from "../features/auth/authSlice";
 
 interface SignUpForm {
   firstName: string;
@@ -37,6 +39,8 @@ const schema = z.object({
 
 const SignUpPage: React.FC = () => {
   const signUpMutation = trpc.useMutation("auth.signUp");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -49,6 +53,17 @@ const SignUpPage: React.FC = () => {
       ...data,
     });
   };
+
+  const onSuccessSignUp = () => {
+    if (signUpMutation.isSuccess) {
+      dispatch(signIn(signUpMutation.data));
+      navigate("/", { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    onSuccessSignUp();
+  }, [signUpMutation.isSuccess]);
 
   return (
     <main className="bg-gray-200 h-screen w-screen flex items-center justify-center">
