@@ -1,6 +1,6 @@
 import { createProtectedRouter } from "../../middleware/authMiddleware";
 import { z } from "zod";
-import { decodeToken, validateToken } from "../../utils/jwt";
+import { decodeToken } from "../../utils/jwt";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../../db/prisma";
 
@@ -8,15 +8,19 @@ const comment = createProtectedRouter()
   .query("getCommentByTweet", {
     input: z.number(),
     async resolve({ input }) {
+      const count = await prisma.comment.count({ where: { tweetId: input } });
       const comments = await prisma.comment.findMany({
         where: { tweetId: input },
         include: {
           user: true,
         },
-        take: 3,
+        take: 2,
       });
 
-      return comments;
+      return {
+        comments,
+        count,
+      };
     },
   })
   .mutation("createComment", {

@@ -1,5 +1,5 @@
 import { BiComment, BiShare } from "react-icons/bi";
-import { BsHeart, BsBookmark } from "react-icons/bs";
+import { BsHeart, BsBookmark, BsHeartFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import CommentSection from "../CommentSection";
@@ -23,7 +23,20 @@ const TweetCard = ({
   username,
   id,
 }: TweetCardProps) => {
-  const { data: comments } = trpc.useQuery(["comment.getCommentByTweet", id]);
+  const utils = trpc.useContext();
+
+  const { data } = trpc.useQuery(["comment.getCommentByTweet", id]);
+
+  const { data: like } = trpc.useQuery(["like.countLike", { tweetId: id }]);
+  const likeMutation = trpc.useMutation(["like.likeTweet"], {
+    onSuccess() {
+      utils.invalidateQueries(["like.countLike", { tweetId: id }]);
+    },
+  });
+
+  const clickLike = () => {
+    likeMutation.mutateAsync({ tweetId: id });
+  };
 
   const date = dateformat(createdAt, "dd mmmm 'at' HH:MM");
 
@@ -44,24 +57,30 @@ const TweetCard = ({
         </div>
       </div>
       <p className="font-noto mt-4">{text}</p>
-      <div className="flex justify-end space-x-3 text-xs text-gray-400 mt-4">
-        <button>
-          {comments && comments.length > 0 ? comments.length + " Comments" : ""}
-        </button>
-        <button>1 Shared</button>
-        <button>2 Saved</button>
-      </div>
 
-      <div className="border-y border-y-gray-300 flex justify-between px-2 xl:px-10 mt-2 py-1">
-        <ButtonAction icon={<BiComment size={16} />} text="Comment" />
-        <ButtonAction icon={<BiShare size={16} />} text="Share" />
-        <ButtonAction icon={<BsHeart size={16} />} text="Like" />
-        <ButtonAction icon={<BsBookmark size={16} />} text="Save" />
+      <div className="border-b border-b-gray-300 flex justify-between px-2 xl:px-10 mt-4 py-1">
+        <ButtonAction
+          icon={<BiComment size={16} />}
+          text={data ? `${data.count}` : "0"}
+        />
+        <ButtonAction icon={<BiShare size={16} />} text="0" />
+        <ButtonAction
+          icon={
+            like && like.liked ? (
+              <BsHeartFill className="text-red-400" size={16} />
+            ) : (
+              <BsHeart size={16} />
+            )
+          }
+          text={like ? `${like.count}` : "0"}
+          onClick={clickLike}
+        />
+        <ButtonAction icon={<BsBookmark size={16} />} text="0" />
       </div>
 
       <CommentInput tweetId={id} />
 
-      <CommentSection comments={comments} />
+      <CommentSection comments={data ? data.comments : []} />
     </article>
   );
 };

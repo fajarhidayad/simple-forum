@@ -17,9 +17,9 @@ Built with React & TypeScript for Client Side.<br/>
 
 ## TODO
 - [✅] adding authentication & authorization
-- [✅] user can post
-- [❌] user can comment
+- [✅] user can tweet
+- [✅] user can comment
 - [❌] user can retweet
-- [❌] user can like post
+- [✅]??? user can like tweet (still hesitant between change condition like or delete query instead)
 - [❌] edit profile
 - [❌] user can follow
