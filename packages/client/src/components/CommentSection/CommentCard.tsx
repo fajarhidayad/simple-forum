@@ -2,6 +2,7 @@ import React from "react";
 import { BsHeart } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import dateFormat from "dateformat";
 
 interface CommentCardProps {
   fullName: string;
@@ -14,7 +15,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
   createdAt,
   fullName,
 }) => {
-  const date = new Date(createdAt).toString();
+  const date = dateFormat(createdAt, "dd mmmm 'at' HH:MM");
   return (
     <div className="flex mt-4">
       <div className="w-10 h-10 text-gray-700 rounded-full flex items-center justify-center font-bold mr-2">

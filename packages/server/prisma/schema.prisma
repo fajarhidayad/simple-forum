@@ -18,9 +18,10 @@ model Tweet {
   updatedAt DateTime @updatedAt
   text      String   @db.VarChar(255)
 
-  user    User      @relation(fields: [userId], references: [id])
-  userId  Int
-  Comment Comment[]
+  user     User        @relation(fields: [userId], references: [id])
+  userId   Int
+  comments Comment[]
+  likes    LikeTweet[]
 }
 
 model User {
@@ -36,6 +37,7 @@ model User {
 
   tweets   Tweet[]
   comments Comment[]
+  likes    LikeTweet[]
 }
 
 model Comment {
@@ -47,4 +49,13 @@ model Comment {
   userId  Int
   tweet   Tweet @relation(fields: [tweetId], references: [id])
   tweetId Int
+}
+
+model LikeTweet {
+  id Int @id @default(autoincrement())
+
+  Tweet   Tweet @relation(fields: [tweetId], references: [id])
+  tweetId Int
+  User    User  @relation(fields: [userId], references: [id])
+  userId  Int
 }

@@ -12,14 +12,7 @@ export const createProtectedRouter = () => {
       });
     }
 
-    const verifyToken = validateToken(token);
-
-    if (!verifyToken) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Invalid token",
-      });
-    }
+    validateToken(token);
 
     return next();
   });

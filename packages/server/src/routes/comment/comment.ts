@@ -26,8 +26,7 @@ const comment = createProtectedRouter()
     }),
     async resolve({ input, ctx }) {
       const token = await ctx.token;
-      const verify = validateToken(token!) as unknown;
-      const { id: userId } = verify as { id: number };
+      const { id: userId } = decodeToken(token!) as { id: number };
 
       const tweet = await prisma.tweet.findUniqueOrThrow({
         where: { id: input.tweetId },

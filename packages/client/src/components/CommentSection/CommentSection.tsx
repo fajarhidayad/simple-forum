@@ -1,16 +1,21 @@
 import { trpc } from "../../utils/trpc";
 import CommentCard from "./CommentCard";
 
-interface CommentSectionProps {
-  postId: number;
+interface Comment {
+  id: number;
+  createdAt: Date;
+  text: string;
+  user: {
+    firstName: string;
+    lastName: string;
+  };
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
-  const { data: comments } = trpc.useQuery([
-    "comment.getCommentByTweet",
-    postId,
-  ]);
+interface CommentSectionProps {
+  comments: Comment[] | undefined;
+}
 
+const CommentSection: React.FC<CommentSectionProps> = ({ comments }) => {
   return (
     <div className="mt-3 border-t border-t-gray-300">
       {comments &&

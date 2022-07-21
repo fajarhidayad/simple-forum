@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import CommentSection from "../CommentSection";
 import ButtonAction from "./ButtonAction";
 import CommentInput from "./CommentInput";
+import dateformat from "dateformat";
+import { trpc } from "../../utils/trpc";
 
 interface TweetCardProps {
   id: number;
@@ -21,21 +23,9 @@ const TweetCard = ({
   username,
   id,
 }: TweetCardProps) => {
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const date = new Date(createdAt).toString();
+  const { data: comments } = trpc.useQuery(["comment.getCommentByTweet", id]);
+
+  const date = dateformat(createdAt, "dd mmmm 'at' HH:MM");
 
   return (
     <article className="bg-white rounded-lg py-4 px-5 shadow-sm mx-auto mb-5">
@@ -55,7 +45,9 @@ const TweetCard = ({
       </div>
       <p className="font-noto mt-4">{text}</p>
       <div className="flex justify-end space-x-3 text-xs text-gray-400 mt-4">
-        <button>10 Comments</button>
+        <button>
+          {comments && comments.length > 0 ? comments.length + " Comments" : ""}
+        </button>
         <button>1 Shared</button>
         <button>2 Saved</button>
       </div>
@@ -69,7 +61,7 @@ const TweetCard = ({
 
       <CommentInput tweetId={id} />
 
-      <CommentSection postId={id} />
+      <CommentSection comments={comments} />
     </article>
   );
 };
