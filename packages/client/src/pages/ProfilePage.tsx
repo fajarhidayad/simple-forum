@@ -57,12 +57,14 @@ const ProfilePage = () => {
           />
         )}
 
-        <CardSide>
-          <CardSideButton text="Tweets" active />
-          <CardSideButton text="Tweets & replies" />
-          <CardSideButton text="Media" />
-          <CardSideButton text="Likes" />
-        </CardSide>
+        <section className="col-span-3 md:col-span-1 md:sticky md:top-48">
+          <CardSide>
+            <CardSideButton text="Tweets" active />
+            <CardSideButton text="Tweets & replies" />
+            <CardSideButton text="Media" />
+            <CardSideButton text="Likes" />
+          </CardSide>
+        </section>
         <section className="col-span-2">
           {loadingState && (
             <>

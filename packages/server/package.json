@@ -4,7 +4,9 @@
   "description": "Fullstack simple forum",
   "main": "src/server.ts",
   "scripts": {
-    "start": "ts-node-dev src/server.ts",
+    "build": "tsc --build",
+    "start": "node build/server.js",
+    "dev": "ts-node-dev src/server.ts",
     "db:seed": "ts-node src/db/seed.ts"
   },
   "repository": {

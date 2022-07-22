@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "client": "yarn --cwd packages/client dev",
-    "server": "yarn --cwd packages/server start",
+    "server": "yarn --cwd packages/server dev",
     "start": "concurrently \"wsrun --parallel start\""
   },
   "workspaces": [

@@ -27,7 +27,7 @@ const ExplorePage = () => {
 
   return (
     <Container>
-      <section className="col-span-1 sticky top-24">
+      <section className="col-span-1 md:sticky md:top-24">
         <CardSide>
           <CardSideButton text="Top" active />
           <CardSideButton text="Latest" />

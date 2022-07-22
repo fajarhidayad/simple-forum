@@ -29,7 +29,7 @@ app.use((req, res) => {
   });
 });
 
-const port = process.env.NODE_PORT;
+const port = process.env.NODE_PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
