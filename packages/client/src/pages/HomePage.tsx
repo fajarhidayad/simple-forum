@@ -42,7 +42,7 @@ const HomePage = () => {
             />
           ))}
       </section>
-      <section className="hidden md:block col-span-1">
+      <section className="hidden md:block col-span-1 sticky top-24">
         <HomeSideBar />
       </section>
     </Container>

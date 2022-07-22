@@ -24,7 +24,7 @@ const BookmarkPage = () => {
 
   return (
     <Container>
-      <section className="col-span-1">
+      <section className="col-span-1 sticky top-24">
         <CardSide>
           <CardSideButton text="Tweets" active />
           <CardSideButton text="Tweets & replies" />
