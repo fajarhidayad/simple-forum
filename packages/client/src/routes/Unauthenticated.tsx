@@ -7,8 +7,8 @@ import SignUpPage from "../pages/SignUpPage";
 import { trpc } from "../utils/trpc";
 
 const Unauthenticated = () => {
-  const url = import.meta.env.SERVER_URL
-    ? `${import.meta.env.SERVER_URL}`
+  const url = import.meta.env.VITE_SERVER_URL
+    ? `${import.meta.env.VITE_SERVER_URL}`
     : "http://localhost:5000";
 
   const [queryClient] = useState(() => new QueryClient());
