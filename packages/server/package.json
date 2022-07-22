@@ -5,6 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "build": "tsc --build",
+    "postinstall": "tsc",
     "start": "node build/server.js",
     "dev": "ts-node-dev src/server.ts",
     "db:seed": "ts-node src/db/seed.ts"
