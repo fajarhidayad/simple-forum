@@ -5,7 +5,7 @@ import { TRPCError } from "@trpc/server";
 import { signToken } from "../../utils/jwt";
 import { signInSchema, signUpSchema } from "./schema";
 
-const auth = createRouter()
+const authRouter = createRouter()
   .mutation("signIn", {
     input: signInSchema,
     async resolve({ input }) {
@@ -76,4 +76,4 @@ const auth = createRouter()
     },
   });
 
-export default auth;
+export default authRouter;

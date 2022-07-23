@@ -5,7 +5,7 @@ interface Comment {
   id: number;
   createdAt: Date;
   text: string;
-  user: {
+  User: {
     firstName: string;
     lastName: string;
   };
@@ -24,7 +24,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ comments }) => {
             key={comment.id}
             comment={comment.text}
             createdAt={comment.createdAt}
-            fullName={`${comment.user.firstName} ${comment.user.lastName}`}
+            fullName={`${comment.User.firstName} ${comment.User.lastName}`}
           />
         ))}
     </div>

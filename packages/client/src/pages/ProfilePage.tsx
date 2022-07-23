@@ -1,17 +1,26 @@
 import { useState } from "react";
 import Container from "../components/Container";
-import TweetCard from "../components/TweetCard";
 import ProfileBackgroundImage from "../components/ProfileBackgroundImage";
 import ProfileInfo from "../components/ProfileInfo";
-import CardSide from "../components/CardSide";
-import CardSideButton from "../components/CardSide/CardSideButton";
 import Overlay from "../components/Overlay";
 import { trpc } from "../utils/trpc";
 import { useLocation } from "react-router-dom";
-import SkeletonTweetCard from "../components/TweetCard/SkeletonTweetCard";
 import SkeletonProfileInfo from "../components/ProfileInfo/SkeletonProfileInfo";
+import CardSideTab from "../layouts/CardSideTab";
+import TweetsTab from "../layouts/TweetsTab";
+import RepliesTab from "../layouts/RepliesTab";
+import MediaTab from "../layouts/MediaTab";
+import LikesTab from "../layouts/LikesTab";
+
+enum Tab {
+  Tweets,
+  Replies,
+  Media,
+  Likes,
+}
 
 const ProfilePage = () => {
+  const [tab, setTab] = useState<Tab>(Tab.Tweets);
   const [overlay, setOverlay] = useState(false);
   const [overlayTitle, setOverlayTitle] = useState("");
   const username = useLocation().pathname.slice(1);
@@ -23,21 +32,33 @@ const ProfilePage = () => {
     error: errorUser,
   } = trpc.useQuery(["user.getUserProfile", username]);
 
-  const {
-    data: tweets,
-    error,
-    isError,
-    isLoading,
-  } = trpc.useQuery(["tweet.getUserTweet", username]);
-  const loadingState = isLoading && <h1>Loading...</h1>;
-  const errorState = isError && (
-    <h1 className="text-2xl text-center text-gray-500">{error.message}</h1>
-  );
-
   const showOverlay = (type: string) => {
     setOverlayTitle(type);
     setOverlay(true);
   };
+
+  const profileTab = [
+    {
+      text: "Tweets",
+      isActive: tab === Tab.Tweets,
+      onClick: () => setTab(Tab.Tweets),
+    },
+    {
+      text: "Tweets & Replies",
+      isActive: tab === Tab.Replies,
+      onClick: () => setTab(Tab.Replies),
+    },
+    {
+      text: "Media",
+      isActive: tab === Tab.Media,
+      onClick: () => setTab(Tab.Media),
+    },
+    {
+      text: "Likes",
+      isActive: tab === Tab.Likes,
+      onClick: () => setTab(Tab.Likes),
+    },
+  ];
 
   return (
     <>
@@ -48,7 +69,7 @@ const ProfilePage = () => {
       />
       <ProfileBackgroundImage />
       <Container className="-translate-y-[100px]">
-        {isLoading ? (
+        {isLoadingUser ? (
           <SkeletonProfileInfo />
         ) : (
           <ProfileInfo
@@ -58,32 +79,13 @@ const ProfilePage = () => {
         )}
 
         <section className="col-span-3 md:col-span-1 md:sticky md:top-48">
-          <CardSide>
-            <CardSideButton text="Tweets" active />
-            <CardSideButton text="Tweets & replies" />
-            <CardSideButton text="Media" />
-            <CardSideButton text="Likes" />
-          </CardSide>
+          <CardSideTab components={profileTab} />
         </section>
         <section className="col-span-2">
-          {loadingState && (
-            <>
-              <SkeletonTweetCard />
-              <SkeletonTweetCard />
-            </>
-          )}
-          {errorState}
-          {tweets &&
-            tweets.map((tweet) => (
-              <TweetCard
-                key={tweet.id}
-                id={tweet.id}
-                fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
-                username={tweet.user.username}
-                createdAt={tweet.createdAt}
-                text={tweet.text}
-              />
-            ))}
+          {tab === Tab.Tweets && <TweetsTab username={username} />}
+          {tab === Tab.Replies && <RepliesTab />}
+          {tab === Tab.Media && <MediaTab />}
+          {tab === Tab.Likes && <LikesTab username={username} />}
         </section>
       </Container>
     </>

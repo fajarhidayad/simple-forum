@@ -4,7 +4,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { decodeToken } from "../../utils/jwt";
 
-const tweets = createProtectedRouter()
+const tweetRouter = createProtectedRouter()
   .query("getAll", {
     resolve: async () => {
       const tweets = await prisma.tweet.findMany({
@@ -13,7 +13,7 @@ const tweets = createProtectedRouter()
           createdAt: "desc",
         },
         include: {
-          user: true,
+          User: true,
         },
       });
       return tweets;
@@ -35,7 +35,7 @@ const tweets = createProtectedRouter()
       const userTweets = await prisma.tweet.findMany({
         where: { userId: user.id },
         orderBy: { createdAt: "desc" },
-        include: { user: true },
+        include: { User: true },
       });
 
       return userTweets;
@@ -55,4 +55,4 @@ const tweets = createProtectedRouter()
     },
   });
 
-export default tweets;
+export default tweetRouter;

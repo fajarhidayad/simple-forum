@@ -2,8 +2,41 @@ import { createProtectedRouter } from "../../middleware/authMiddleware";
 import { prisma } from "../../db/prisma";
 import { z } from "zod";
 import { decodeToken } from "../../utils/jwt";
+import { TRPCError } from "@trpc/server";
 
-const like = createProtectedRouter()
+const likeRouter = createProtectedRouter()
+  .query("getUserLike", {
+    input: z.object({
+      username: z.string().optional(),
+    }),
+    async resolve({ ctx, input }) {
+      const token = await ctx.token;
+      if (!token && !input.username)
+        throw new TRPCError({ code: "BAD_REQUEST" });
+
+      if (input.username) {
+        const user = await prisma.user.findUnique({
+          where: { username: input.username },
+        });
+        if (!user) throw new TRPCError({ code: "NOT_FOUND" });
+
+        const likedTweets = await prisma.likeTweet.findMany({
+          where: { userId: user.id },
+          include: { Tweet: true, User: true },
+        });
+
+        return likedTweets;
+      }
+
+      const { id: userId } = decodeToken(token!) as { id: number };
+
+      const likedTweet = await prisma.likeTweet.findMany({
+        where: { userId },
+        include: { Tweet: true, User: true },
+      });
+      return likedTweet;
+    },
+  })
   .query("countLike", {
     input: z.object({
       tweetId: z.number(),
@@ -13,7 +46,7 @@ const like = createProtectedRouter()
       const { id: userId } = decodeToken(token!) as { id: number };
 
       const countLike = await prisma.likeTweet.count({
-        where: { tweetId: input.tweetId },
+        where: { tweetId: input.tweetId, status: true },
       });
       const likedByUser = await prisma.likeTweet.findFirst({
         where: { userId, tweetId: input.tweetId },
@@ -21,7 +54,7 @@ const like = createProtectedRouter()
 
       return {
         count: countLike,
-        liked: likedByUser ? true : false,
+        liked: likedByUser && likedByUser.status,
       };
     },
   })
@@ -38,11 +71,16 @@ const like = createProtectedRouter()
       });
 
       if (like) {
-        return await prisma.likeTweet.delete({ where: { id: like.id } });
+        const status = like.status;
+        return await prisma.likeTweet.update({
+          data: { status: !status },
+          where: { id: like.id },
+        });
       }
 
       return await prisma.likeTweet.create({
         data: {
+          status: true,
           tweetId: input.tweetId,
           userId,
         },
@@ -50,4 +88,4 @@ const like = createProtectedRouter()
     },
   });
 
-export default like;
+export default likeRouter;

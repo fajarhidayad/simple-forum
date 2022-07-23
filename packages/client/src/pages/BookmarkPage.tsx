@@ -1,51 +1,54 @@
-import CardSide from "../components/CardSide";
-import CardSideButton from "../components/CardSide/CardSideButton";
+import { useState } from "react";
 import Container from "../components/Container";
-import TweetCard from "../components/TweetCard";
-import SkeletonTweetCard from "../components/TweetCard/SkeletonTweetCard";
-import { trpc } from "../utils/trpc";
+import CardSideTab from "../layouts/CardSideTab";
+import LikesTab from "../layouts/LikesTab";
+import RepliesTab from "../layouts/RepliesTab";
+import TweetsTab from "../layouts/TweetsTab";
+import MediaTab from "../layouts/MediaTab";
+
+enum Tab {
+  Tweets,
+  Replies,
+  Media,
+  Likes,
+}
 
 const BookmarkPage = () => {
-  const {
-    data: tweets,
-    isLoading,
-    isError,
-    error,
-  } = trpc.useQuery(["tweet.getAll"]);
+  const [tab, setTab] = useState<Tab>(Tab.Tweets);
 
-  const loadingState = isLoading && (
-    <>
-      <SkeletonTweetCard />
-      <SkeletonTweetCard />
-      <SkeletonTweetCard />
-    </>
-  );
-  const errorState = isError && <h1>{error.message}</h1>;
+  const bookmarkTab = [
+    {
+      text: "Tweets",
+      isActive: tab === Tab.Tweets,
+      onClick: () => setTab(Tab.Tweets),
+    },
+    {
+      text: "Tweets & Replies",
+      isActive: tab === Tab.Replies,
+      onClick: () => setTab(Tab.Replies),
+    },
+    {
+      text: "Media",
+      isActive: tab === Tab.Media,
+      onClick: () => setTab(Tab.Media),
+    },
+    {
+      text: "Likes",
+      isActive: tab === Tab.Likes,
+      onClick: () => setTab(Tab.Likes),
+    },
+  ];
 
   return (
     <Container>
       <section className="col-span-1 md:sticky md:top-24">
-        <CardSide>
-          <CardSideButton text="Tweets" active />
-          <CardSideButton text="Tweets & replies" />
-          <CardSideButton text="Media" />
-          <CardSideButton text="Likes" />
-        </CardSide>
+        <CardSideTab components={bookmarkTab} />
       </section>
       <section className="col-span-2">
-        {loadingState}
-        {errorState}
-        {tweets &&
-          tweets.map((tweet) => (
-            <TweetCard
-              key={tweet.id}
-              id={tweet.id}
-              fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
-              username={tweet.user.username}
-              text={tweet.text}
-              createdAt={tweet.createdAt}
-            />
-          ))}
+        {tab === Tab.Tweets && <TweetsTab />}
+        {tab === Tab.Replies && <RepliesTab />}
+        {tab === Tab.Media && <MediaTab />}
+        {tab === Tab.Likes && <LikesTab />}
       </section>
     </Container>
   );

@@ -1,5 +1,10 @@
 import { BiComment, BiShare } from "react-icons/bi";
-import { BsHeart, BsBookmark, BsHeartFill } from "react-icons/bs";
+import {
+  BsHeart,
+  BsBookmark,
+  BsBookmarkFill,
+  BsHeartFill,
+} from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import CommentSection from "../CommentSection";
@@ -7,6 +12,7 @@ import ButtonAction from "./ButtonAction";
 import CommentInput from "./CommentInput";
 import dateformat from "dateformat";
 import { trpc } from "../../utils/trpc";
+import Loading from "../Loading";
 
 interface TweetCardProps {
   id: number;
@@ -28,14 +34,32 @@ const TweetCard = ({
   const { data } = trpc.useQuery(["comment.getCommentByTweet", id]);
 
   const { data: like } = trpc.useQuery(["like.countLike", { tweetId: id }]);
-  const likeMutation = trpc.useMutation(["like.likeTweet"], {
+  const { data: savedTweet } = trpc.useQuery([
+    "bookmark.countSaved",
+    { tweetId: id },
+  ]);
+  const { mutateAsync, isLoading } = trpc.useMutation(["like.likeTweet"], {
     onSuccess() {
       utils.invalidateQueries(["like.countLike", { tweetId: id }]);
     },
   });
 
+  const { mutateAsync: mutateSave, isLoading: loadingSave } = trpc.useMutation(
+    ["bookmark.saveTweet"],
+    {
+      onSuccess() {
+        utils.invalidateQueries(["bookmark.countSaved", { tweetId: id }]);
+        utils.invalidateQueries(["bookmark.getSavedTweets"]);
+      },
+    }
+  );
+
   const clickLike = () => {
-    likeMutation.mutateAsync({ tweetId: id });
+    mutateAsync({ tweetId: id });
+  };
+
+  const saveTweet = () => {
+    mutateSave({ tweetId: id });
   };
 
   const date = dateformat(createdAt, "dd mmmm 'at' HH:MM");
@@ -66,16 +90,34 @@ const TweetCard = ({
         <ButtonAction icon={<BiShare size={16} />} text="0" />
         <ButtonAction
           icon={
-            like && like.liked ? (
-              <BsHeartFill className="text-red-400" size={16} />
-            ) : (
-              <BsHeart size={16} />
-            )
+            <Loading isLoading={isLoading} size={16} className="text-blue-500">
+              {like && like.liked ? (
+                <BsHeartFill className="text-red-400" size={16} />
+              ) : (
+                <BsHeart size={16} className="text-black" />
+              )}
+            </Loading>
           }
           text={like ? `${like.count}` : "0"}
           onClick={clickLike}
         />
-        <ButtonAction icon={<BsBookmark size={16} />} text="0" />
+        <ButtonAction
+          icon={
+            <Loading
+              isLoading={loadingSave}
+              size={16}
+              className="text-blue-500"
+            >
+              {savedTweet && savedTweet.saved ? (
+                <BsBookmarkFill className="text-yellow-400" size={16} />
+              ) : (
+                <BsBookmark size={16} className="text-black" />
+              )}
+            </Loading>
+          }
+          text={savedTweet ? savedTweet.count : 0}
+          onClick={saveTweet}
+        />
       </div>
 
       <CommentInput tweetId={id} />

@@ -4,7 +4,7 @@ import { decodeToken } from "../../utils/jwt";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../../db/prisma";
 
-const comment = createProtectedRouter()
+const commentRouter = createProtectedRouter()
   .query("getCommentByTweet", {
     input: z.number(),
     async resolve({ input }) {
@@ -12,7 +12,7 @@ const comment = createProtectedRouter()
       const comments = await prisma.comment.findMany({
         where: { tweetId: input },
         include: {
-          user: true,
+          User: true,
         },
         take: 2,
       });
@@ -62,4 +62,4 @@ const comment = createProtectedRouter()
     },
   });
 
-export default comment;
+export default commentRouter;

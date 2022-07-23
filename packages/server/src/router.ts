@@ -1,14 +1,16 @@
 import { createRouter } from "./utils/context";
-import tweet from "./routes/tweet";
-import auth from "./routes/auth";
-import user from "./routes/user";
-import comment from "./routes/comment/comment";
-import like from "./routes/like/like";
+import tweetRouter from "./routes/tweet";
+import authRouter from "./routes/auth";
+import userRouter from "./routes/user";
+import commentRouter from "./routes/comment/comment";
+import likeRouter from "./routes/like/like";
+import bookmarkRouter from "./routes/bookmark/bookmark";
 
 export const appRouter = createRouter()
-  .merge("tweet.", tweet)
-  .merge("auth.", auth)
-  .merge("user.", user)
-  .merge("comment.", comment)
-  .merge("like.", like);
+  .merge("tweet.", tweetRouter)
+  .merge("auth.", authRouter)
+  .merge("user.", userRouter)
+  .merge("comment.", commentRouter)
+  .merge("like.", likeRouter)
+  .merge("bookmark.", bookmarkRouter);
 export type AppRouter = typeof appRouter;

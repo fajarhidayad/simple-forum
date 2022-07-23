@@ -5,7 +5,7 @@ import { createProtectedRouter } from "../../middleware/authMiddleware";
 import { decodeToken } from "../../utils/jwt";
 import exclude from "../../utils/excludeQuery";
 
-const user = createProtectedRouter()
+const userRouter = createProtectedRouter()
   .query("getInfo", {
     // Get User Auth by Token
     async resolve({ ctx }) {
@@ -60,4 +60,4 @@ const user = createProtectedRouter()
     },
   });
 
-export default user;
+export default userRouter;

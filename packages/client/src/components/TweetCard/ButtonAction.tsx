@@ -2,7 +2,7 @@ import React from "react";
 
 interface ButtonActionProps {
   icon: React.ReactNode;
-  text: string;
+  text: string | number;
   onClick?: () => void;
 }
 

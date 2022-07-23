@@ -18,10 +18,11 @@ model Tweet {
   updatedAt DateTime @updatedAt
   text      String   @db.VarChar(255)
 
-  user     User        @relation(fields: [userId], references: [id])
-  userId   Int
-  comments Comment[]
-  likes    LikeTweet[]
+  User      User        @relation(fields: [userId], references: [id])
+  userId    Int
+  Comments  Comment[]
+  Likes     LikeTweet[]
+  Bookmarks Bookmark[]
 }
 
 model User {
@@ -35,9 +36,10 @@ model User {
   email     String @unique
   password  String @db.VarChar(255)
 
-  tweets   Tweet[]
-  comments Comment[]
-  likes    LikeTweet[]
+  Tweets    Tweet[]
+  Comments  Comment[]
+  Likes     LikeTweet[]
+  Bookmarks Bookmark[]
 }
 
 model Comment {
@@ -45,17 +47,27 @@ model Comment {
   createdAt DateTime @default(now())
   text      String   @db.VarChar(255)
 
-  user    User  @relation(fields: [userId], references: [id])
+  User    User  @relation(fields: [userId], references: [id])
   userId  Int
-  tweet   Tweet @relation(fields: [tweetId], references: [id])
+  Tweet   Tweet @relation(fields: [tweetId], references: [id])
   tweetId Int
 }
 
 model LikeTweet {
-  id Int @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
+  status Boolean
 
   Tweet   Tweet @relation(fields: [tweetId], references: [id])
   tweetId Int
   User    User  @relation(fields: [userId], references: [id])
   userId  Int
+}
+
+model Bookmark {
+  id Int @id @default(autoincrement())
+
+  User    User  @relation(fields: [userId], references: [id])
+  userId  Int
+  Tweet   Tweet @relation(fields: [tweetId], references: [id])
+  tweetId Int
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSendSharp } from "react-icons/io5";
 import { trpc } from "../../utils/trpc";
+import Loading from "../Loading";
 
 interface CommentInputProps {
   tweetId: number;
@@ -11,17 +12,20 @@ const CommentInput: React.FC<CommentInputProps> = ({ tweetId }) => {
   const [comment, setComment] = useState("");
 
   const utils = trpc.useContext();
-  const commentMutation = trpc.useMutation(["comment.createComment"], {
-    onSuccess() {
-      utils.invalidateQueries(["comment.getCommentByTweet", tweetId]);
-    },
-  });
+  const { mutateAsync, isLoading } = trpc.useMutation(
+    ["comment.createComment"],
+    {
+      onSuccess() {
+        utils.invalidateQueries(["comment.getCommentByTweet", tweetId]);
+      },
+    }
+  );
 
   const submitComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment) return;
 
-    commentMutation.mutateAsync({
+    mutateAsync({
       comment,
       tweetId,
     });
@@ -42,11 +46,13 @@ const CommentInput: React.FC<CommentInputProps> = ({ tweetId }) => {
           className="px-3 py-2 rounded border border-gray-300 bg-gray-100 flex-1 text-sm focus:outline-none"
         />
         <button
-          disabled={comment.length < 1 || comment.length > 255}
+          disabled={comment.length < 1 || comment.length > 255 || isLoading}
           onClick={submitComment}
           className="bg-blue-500 active:bg-blue-600 text-white rounded ml-3 py-2 px-4 transition-all duration-200 disabled:bg-blue-300"
         >
-          <IoSendSharp size={20} className="translate-x-[2px]" />
+          <Loading isLoading={isLoading} size={20}>
+            <IoSendSharp size={20} className="translate-x-[2px]" />
+          </Loading>
         </button>
       </form>
     </div>

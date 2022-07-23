@@ -44,8 +44,8 @@ const ExplorePage = () => {
             <TweetCard
               key={tweet.id}
               id={tweet.id}
-              fullName={`${tweet.user.firstName} ${tweet.user.lastName}`}
-              username={tweet.user.username}
+              fullName={`${tweet.User.firstName} ${tweet.User.lastName}`}
+              username={tweet.User.username}
               text={tweet.text}
               createdAt={tweet.createdAt}
             />
