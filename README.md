@@ -1,11 +1,14 @@
+# Deprecated
+Because Heroku removing free tier, I rebuild a new one with Next.js <a href="https://github.com/fajarhidayad/twister">here</a>
+
 # Simple-Forum - Twitter Clone
 ## 🕒 Work In Progress
 A simple social media like twitter where it can made post, follow people, like, comment & retweet.<br/>
 Built with React & TypeScript for Client Side.<br/>
 
 ## Tools
-- **Client**: React - Vite not CRA
-- **Styling**: Tailwind CSS - it's a must if you haven't tried it, I suggest do it now.
+- **Client**: React - Vite
+- **Styling**: Tailwind CSS
 - **State Management**: Redux-Toolkit
 - **Form Validation**: React-Hook-Form
 - **Schema Validation**: Zod
